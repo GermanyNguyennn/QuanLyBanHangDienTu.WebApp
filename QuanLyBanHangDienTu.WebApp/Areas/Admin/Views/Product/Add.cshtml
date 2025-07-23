@@ -1,0 +1,156 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models
+@model ProductModel
+@{
+    ViewData["Title"] = "Thêm Sản Phẩm";
+}
+
+<div class="">
+<form asp-action="Add" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <table class="table table-bordered">
+        <tr>
+            <th style ="vertical-align: middle;"><label>Tên Sản Phẩm</label></th>
+            <td>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Ảnh</label></th>
+            <td>
+                <input asp-for="ImageUpload" class="form-control" />
+                <span asp-validation-for="ImageUpload" class="text-danger"></span>
+                <img id="imgpreview" class="pt-2" />
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Mô Tả</label></th>
+            <td>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Màu Sắc</label></th>
+            <td>
+                <input asp-for="Color" class="form-control" />
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Phiên Bản</label></th>
+            <td>
+                <input asp-for="Version" class="form-control" />
+                <span asp-validation-for="Version" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Giá Bán</label></th>
+            <td>
+                <input asp-for="Price" pattern="[0-9.,]+" class="form-control typing-price" />
+                <div id="price-convert"></div>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Giá Nhập</label></th>
+            <td>
+                <input asp-for="ImportPrice" pattern="[0-9.,]+" class="form-control typing-importprice" />
+                <div id="importprice-convert"></div>
+                <span asp-validation-for="ImportPrice" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Số Lượng</label></th>
+            <td>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Danh Mục</label></th>
+            <td>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                    <option>-- Lựa Chọn --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Thương Hiệu</label></th>
+            <td>
+                <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
+                    <option>-- Lựa Chọn --</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="vertical-align: middle;"><label>Công Ty</label></th>
+            <td>
+                <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.Companies">
+                    <option>-- Lựa Chọn --</option>
+                </select>
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="text-right">
+                <button class="btn btn-warning btn-sm">Thêm</button>
+                <a asp-action="Index" asp-controller="Product" class="btn btn-warning btn-sm">Quay Lại</a>
+            </td>
+        </tr>
+    </table>
+</form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('Description');
+        </script>
+        <script>
+            $("#ImageUpload").change(function(){
+                readURL(this);
+            });
+        </script>
+        <script>
+                    $(".typing-price").on("keyup", function () {
+            var currency_input = parseFloat($(this).val().replace(/[^\d]/g, ''));
+            if (!isNaN(currency_input)) {
+                $("#price-convert").html(
+                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(currency_input)
+                );
+            } else {
+                $("#price-convert").html('');
+            }
+        });
+
+        $(".typing-importprice").on("keyup", function () {
+            var currency_input = parseFloat($(this).val().replace(/[^\d]/g, ''));
+            if (!isNaN(currency_input)) {
+                $("#importprice-convert").html(
+                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(currency_input)
+                );
+            } else {
+                $("#importprice-convert").html('');
+            }
+        });
+
+        </script>
+}

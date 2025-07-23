@@ -1,0 +1,69 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models
+@using QuanLyBanHangDienTu.WebApp.Repository
+@using QuanLyBanHangDienTu.WebApp.Repository.Validation
+
+@model IEnumerable<ContactModel>
+@{
+    ViewData["title"] = "Danh Sách Liên Hệ";
+
+    Paginate pager = new Paginate();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+
+        pageNo = pager.CurrentPage;
+    }
+}
+
+<div class="">
+<p><a asp-controller="Contact" asp-action="Add" class="btn btn-warning btn-sm">Thêm Liên Hệ</a></p>
+<table class="table table-bordered table-hover" id="myTable">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Id</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Tên Liên Hệ</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Ảnh</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Địa Chỉ</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Email</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Số Điện Thoại</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Địa Chỉ</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="col" class="text-center" style="vertical-align: middle;">@item.Id</td>
+                    <td>@item.Name</td>
+                    <td><img src="@Url.Content($"~/media/logo/{item.LogoImage}")" style="max-width: 100px; max-height: 100px;" /></td>
+                    <td>
+                        <div id="map">
+                            <iframe src="@item.Map"
+                                    width="100%"
+                                    style="border:0;"
+                                    allowfullscreen=""
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </td>
+                    <td>@item.Email</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Address</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Contact" asp-route-Id="@item.Id">Sửa</a>
+                        @* <a class="btn btn-warning btn-sm" confirmDeletion" asp-action="Delete" asp-controller="Contact" asp-route-Id="@item.Id">Xoá</a> *@
+                    </td>
+                    <td>
+                        @* <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Contact" asp-route-Id="@item.Id">Sửa</a> *@
+                        <a class="btn btn-warning btn-sm" confirmDeletion" asp-action="Delete" asp-controller="Contact" asp-route-Id="@item.Id">Xoá</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+<partial name="_Paging" model="@pager" />
+</div>

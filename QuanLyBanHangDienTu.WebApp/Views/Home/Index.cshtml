@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ProductModel>
+
+<partial name="_SliderPartial" />
+
+<div class="col-sm-3">
+	<partial name="_SidebarPartial" />
+</div>
+
+<div class="col-sm-9">
+	<div class="features_items">
+		<h2 class="title text-center">Sản Phẩm</h2>
+		@if (Model != null)
+		{
+			@foreach (var item in Model)
+			{
+				<div class="col-sm-4">
+					<div class="product-image-wrapper">
+						<div class="single-products">
+							<div class="productinfo text-center">
+								<a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id">
+									<img src="@Url.Content($"~/media/products/{item.Image}")" alt="@item.Name" />
+									<p><h2>@item.Price.ToString("#,##0 VNĐ")</h2></p>
+									<p>@item.Name</p>
+
+								</a>
+								@if (@item.Quantity > 0)
+								{
+									<a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-Id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm Vào Giỏ Hàng</a>
+								}
+								else
+								{
+									<a class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Hết Hàng</a>
+								}
+							</div>
+							<div class="product-overlay">
+								<div class="overlay-content">
+									<a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id">
+										<p><h2>@item.Price.ToString("#,##0 VNĐ")</h2></p>
+										<p>@item.Name</p>
+									</a>
+									@if (@item.Quantity > 0)
+									{
+										<a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-Id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm Vào Giỏ Hàng</a>
+									}
+									else
+									{
+										<a class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Hết Hàng</a>
+									}
+								</div>
+							</div>
+						</div>
+						<div class="choose">
+							<ul class="nav nav-pills nav-justified">
+								<li><a href="#"><i class="fa fa-plus-square"></i>Yêu Thích</a></li>
+								<li><a href="#"><i class="fa fa-plus-square"></i>So Sánh</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</div>
+</div>
+
+@section Scripts {
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			$('#sort_by').on('change', function () {
+
+				var url = $(this).val();
+				if (url) {
+					window.location = url;
+				}
+				return false;
+			});
+
+		});
+	</script>
+}

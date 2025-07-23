@@ -1,0 +1,96 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models
+@using QuanLyBanHangDienTu.WebApp.Repository
+@using QuanLyBanHangDienTu.WebApp.Repository.Validation
+@model IEnumerable<OrderModel>
+@{
+    ViewData["Title"] = "Danh Sách Đơn Hàng";
+
+    Paginate pager = new Paginate();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+
+        pageNo = pager.CurrentPage;
+    }
+}
+<div class="">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Id</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Mã Đơn Hàng</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Tài Khoản</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Ngày Mua Hàng</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Trạng Thái</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Phương Thức Thanh Toán</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                    <tr>
+                        <td scope="col" class="text-center" style="vertical-align: middle;">@item.Id</td>
+                        <td>@item.OrderCode</td>
+                        <td>
+                            <a asp-controller="Order" asp-action="UserInformation" asp-route-orderCode="@item.OrderCode">@item.UserName</a>
+                        </td>
+                        <td>@item.CreatedDate</td>
+                        <td>
+                        @if (item.Status == 1)
+                        {
+                                    <span class="text text-warning">Đã Đặt Hàng</span>
+                        }
+                        else if (item.Status == 2)
+                        {
+                                    <span class="text text-success">Đã Giao Hàng</span>
+                        }
+                        else
+                        {
+                                    <span class="text text-danger">Đã Huỷ</span>
+                        }
+                        </td>
+                        <td>
+                        @if (string.IsNullOrEmpty(item.PaymentMethod))
+                        {
+                                    <span class="text text-primary">COD</span>
+                        }
+                        else
+                        {
+                            var parts = item.PaymentMethod.Split(' ');
+                            var text_split = parts.Length > 0 ? parts[0] : "";
+                            var number_split = parts.Length > 1 ? parts[1] : "";
+
+                            if (text_split == "MoMo")
+                            {
+                                @text_split
+                                            <a asp-route-OrderId="@number_split" asp-action="PaymentMoMoOrder" asp-controller="Order"><span class="text text-primary">@number_split</span></a>
+                            }
+                            else if (text_split == "VNPay")
+                            {
+                                @text_split
+                                            <a asp-route-OrderId="@number_split" asp-action="PaymentVNPayOrder" asp-controller="Order"><span class="text text-primary">@number_split</span></a>
+                            }
+                            else if (text_split == "COD")
+                            {
+                                            <span class="text text-primary">COD</span>
+                            }
+                            else
+                            {
+                                            <span class="text text-secondary">Không Xác Định</span>
+                            }
+                        }
+                        </td>
+
+                        <td>
+                            <a asp-controller="Order" asp-action="ViewOrder" asp-route-OrderCode="@item.OrderCode" class="btn btn-warning btn-sm">Xem</a>
+                            <a asp-controller="Order" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-warning btn-sm confirmDeletion">Xoá</a>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_Paging" model="@pager" />
+</div>

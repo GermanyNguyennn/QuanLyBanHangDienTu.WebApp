@@ -1,0 +1,71 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models
+@model ProductDetailLaptopModel
+
+@{
+    ViewData["Title"] = "Thêm Chi Tiết Laptop";
+}
+
+<form asp-action="AddDetail" method="POST">
+    <input type="hidden" asp-for="ProductId" />
+    <input type="hidden" asp-for="CategoryId" />
+    <input type="hidden" asp-for="BrandId" />
+    <input type="hidden" asp-for="CompanyId" />
+
+    <table class="table table-bordered">
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="GraphicsCardType">Loại Card Đồ Hoạ</label></th>
+            <td><input asp-for="GraphicsCardType" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="RAMCapacity">Phiên Bản RAM</label></th>
+            <td><input asp-for="RAMCapacity" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="RAMType">Loại RAM</label></th>
+            <td><input asp-for="RAMType" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="NumberOfRAMSlots">Số Khe RAM</label></th>
+            <td><input asp-for="NumberOfRAMSlots" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="HardDrive">Ổ Cứng</label></th>
+            <td><input asp-for="HardDrive" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="ScreenSize">Kích Thước Màn Hình</label></th>
+            <td><input asp-for="ScreenSize" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="ScreenTechnology">Công Nghệ Màn Hình</label></th>
+            <td><input asp-for="ScreenTechnology" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="Battery">Pin</label></th>
+            <td><input asp-for="Battery" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="OperatingSystem">Hệ Điều Hành</label></th>
+            <td><input asp-for="OperatingSystem" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="ScreenResolution">Độ Phân Giải Màn Hình</label></th>
+            <td><input asp-for="ScreenResolution" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="CPUType">Loại CPU</label></th>
+            <td><input asp-for="CPUType" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th scope="col" style="vertical-align: middle;"><label asp-for="Interface">Cổng Giao Tiếp</label></th>
+            <td><input asp-for="Interface" class="form-control" /></td>
+        </tr>
+    </table>
+
+    <div class="text-end">
+        <p>
+            <button class="btn btn-warning btn-sm">Sửa</button>
+            <a asp-action="Index" asp-controller="Product" class="btn btn-warning btn-sm">Quay Lại</a>
+        </p>
+    </div>
+</form>

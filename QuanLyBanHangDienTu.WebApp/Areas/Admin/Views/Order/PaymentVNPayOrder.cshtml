@@ -1,0 +1,43 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models
+@using QuanLyBanHangDienTu.WebApp.Repository
+@using QuanLyBanHangDienTu.WebApp.Repository.Validation
+@model VNPayModel
+@{
+    ViewData["Title"] = "Thông Tin Đơn Hàng Thanh Toán Bằng VNPay";
+
+    Paginate pager = new Paginate();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+
+        pageNo = pager.CurrentPage;
+    }
+}
+
+<div class="">
+    <p><a asp-controller="Order" asp-action="Index" class="btn btn-warning btn-sm">Quay Lại</a></p>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Id</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Mã Giao Dịch</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Nội Dung Giao Dịch</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Số Tiền Giao Dịch</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Ngày Giao Dịch</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col" class="text-center" style="vertical-align: middle;">@Model.Id</td>
+                <td>@Model.OrderId</td>
+                <td>@Model.OrderInfo</td>
+                <td>@Model.Amount.ToString("#,##0 VNĐ")</td>
+                <td>@Model.CreatedDate.ToString()</td>
+            </tr>
+        </tbody>
+    </table>
+    <partial name="_Paging" model="@pager" />
+</div>

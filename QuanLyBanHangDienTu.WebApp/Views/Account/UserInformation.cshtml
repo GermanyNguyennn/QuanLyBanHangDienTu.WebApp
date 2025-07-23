@@ -1,0 +1,140 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models.ViewModels
+@model UserInformationViewModel
+@{
+    ViewData["Title"] = "Thông Tin Khách Hàng";
+}
+
+<div class="container">
+    <form asp-action="UserInformation" asp-controller="Account" method="POST" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <table class="table table-bordered">
+            <tr>
+                <th style ="vertical-align: middle;">Họ Và Tên :</th>
+                <td>
+                    <input asp-for="FullName" required class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: middle;">Email :</th>
+                <td>
+                    <input asp-for="Email" required class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: middle;">Số Điện Thoại :</th>
+                <td>
+                    <input asp-for="PhoneNumber" required class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: middle;">Tỉnh / Thành Phố :</th>
+                <td>
+                    <select class="css_select form-control" id="tinh" name="City" data-selected="@Model.City" title="Chọn Tỉnh / Thành">
+                        <option value="">Tỉnh Thành</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: middle;">Quận / Huyện :</th>
+                <td>
+                    <select class="css_select form-control" id="quan" name="District" data-selected="@Model.District" title="Chọn Quận / Huyện">
+                        <option value="">Quận Huyện</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: middle;">Phường / Xã :</th>
+                <td>
+                    <select class="css_select form-control" id="phuong" name="Ward" data-selected="@Model.Ward" title="Chọn Phường / Xã">
+                        <option value="">Phường Xã</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: middle;">Địa Chỉ :</th>
+                <td>
+                    <input asp-for="Address" required class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-right">
+                    <button type="submit" class="btn btn-warning btn-sm">Sửa</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-warning btn-sm">Quay Lại</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+            $(document).ready(function () {
+            var selectedTinh = $("#tinh").data("selected");
+            var selectedQuan = $("#quan").data("selected");
+            var selectedPhuong = $("#phuong").data("selected");
+
+            // Lấy tỉnh thành
+            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                if (data_tinh.error == 0) {
+                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                        var selected = val_tinh.id == selectedTinh ? "selected" : "";
+                        $("#tinh").append('<option value="' + val_tinh.id + '" ' + selected + '>' + val_tinh.full_name + '</option>');
+                    });
+
+                    if (selectedTinh) {
+                        loadQuan(selectedTinh, selectedQuan, selectedPhuong);
+                    }
+
+                    // Khi chọn tỉnh
+                    $("#tinh").change(function () {
+                        var idtinh = $(this).val();
+                        loadQuan(idtinh, null, null);
+                    });
+                }
+            });
+
+            function loadQuan(idtinh, selectedQuanId, selectedPhuongId) {
+                $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                    if (data_quan.error == 0) {
+                        $("#quan").html('<option value="">Quận Huyện</option>');
+                        $("#phuong").html('<option value="">Phường Xã</option>');
+                        $.each(data_quan.data, function (key_quan, val_quan) {
+                            var selected = val_quan.id == selectedQuanId ? "selected" : "";
+                            $("#quan").append('<option value="' + val_quan.id + '" ' + selected + '>' + val_quan.full_name + '</option>');
+                        });
+
+                        if (selectedQuanId) {
+                            loadPhuong(selectedQuanId, selectedPhuongId);
+                        }
+
+                        $("#quan").change(function () {
+                            var idquan = $(this).val();
+                            loadPhuong(idquan, null);
+                        });
+                    }
+                });
+            }
+
+            function loadPhuong(idquan, selectedPhuongId) {
+                $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                    if (data_phuong.error == 0) {
+                        $("#phuong").html('<option value="">Phường Xã</option>');
+                        $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                            var selected = val_phuong.id == selectedPhuongId ? "selected" : "";
+                            $("#phuong").append('<option value="' + val_phuong.id + '" ' + selected + '>' + val_phuong.full_name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+}   

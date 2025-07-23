@@ -1,0 +1,50 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models.ViewModels
+@using QuanLyBanHangDienTu.WebApp.Repository
+@using QuanLyBanHangDienTu.WebApp.Repository.Validation
+@model IEnumerable<UserWithRoleViewModel>
+@{
+    ViewData["Title"] = "Danh Sách Tài Khoản";
+
+    Paginate pager = new Paginate();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+
+        pageNo = pager.CurrentPage;
+    }
+}
+
+<div class="">
+    <p><a asp-controller="User" asp-action="Add" class="btn btn-warning btn-sm">Thêm Tài Khoản</a></p>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Tài Khoản</th>
+                <th scope="col">Email</th>
+                <th scope="col">Số Điện Thoại</th>
+                <th scope="col">Vai Trò</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>@item.User?.Id</td>
+                        <td>@item.User?.UserName</td>
+                        <td>@item.User?.Email</td>
+                        <td>@item.User?.PhoneNumber</td>
+                        <td>@item.RoleName</td>                
+                        <td>
+                            <a asp-controller="User" asp-action="Edit" asp-route-Id="@item.User?.Id" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-controller="User" asp-action="Delete" asp-route-Id="@item.User?.Id" class="btn btn-warning btn-sm confirmDeletion">Xoá</a>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_Paging" model="@pager" />
+</div>

@@ -1,0 +1,72 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Repository
+@using QuanLyBanHangDienTu.WebApp.Repository.Validation
+
+@model IEnumerable<OrderModel>
+@{
+    ViewData["Title"] = "Lịch Sử Mua Hàng";
+
+    Paginate pager = new Paginate();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+
+        pageNo = pager.CurrentPage;
+    }
+}
+
+<div class="container">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Id</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Mã Đơn Hàng</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Tài Khoản</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Ngày Mua Hàng</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Trạng Thái</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Phương Thức Thanh Toán</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="col" class="text-center" style="vertical-align: middle;">@item.Id</td>
+                    <td>@item.OrderCode</td>
+                    <td>@item.UserName</td>
+                    <td>@item.CreatedDate</td>
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <span class="text text-warning">Đã Đặt Hàng</span>
+                        }
+                        else if (item.Status == 2)
+                        {
+                            <span class="text text-success">Đã Giao Hàng</span>
+                        }
+                        else
+                        {
+                            <span class="text text-danger">Đã Huỷ</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.PaymentMethod != null && item.PaymentMethod.StartsWith("COD"))
+                        {
+                            <span class="text text-primary">@item.PaymentMethod</span>
+                        }
+                        else if (item.PaymentMethod != "COD")
+                        {
+                            <span class="text text-primary">@item.PaymentMethod</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="Account" asp-action="ViewOrder" asp-route-OrderCode="@item.OrderCode" class="btn btn-warning btn-sm">Xem</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_Paging" model="@pager" />
+</div>

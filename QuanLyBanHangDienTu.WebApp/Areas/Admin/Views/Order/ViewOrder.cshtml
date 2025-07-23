@@ -1,0 +1,126 @@
+﻿@using QuanLyBanHangDienTu.WebApp.Models
+@model IEnumerable<OrderDetailModel>
+@{
+    ViewData["Title"] = "Danh Sách Chi Tiết Đơn Hàng";
+    decimal subTotal = 0;
+    decimal totalAmount = 0;
+}
+
+<div class="">
+    <p><a asp-controller="Order" asp-action="Index" class="btn btn-warning btn-sm">Quay Lại</a></p>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Id</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Mã Đơn Hàng</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Tài Khoản</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Mã Sản Phẩm</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Tên Sản Phẩm</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Số Lượng</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Đơn Giá</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                subTotal = item.Price * item.Quantity;
+                totalAmount += subTotal; 
+                    <tr>
+                        <input type="hidden" asp-for="@item.OrderCode" class="getId" />
+                        <td scope="col" class="text-center" style="vertical-align: middle;">@item.Id</td>
+                        <td>@item.OrderCode</td>
+                        <td>@item.UserName</td>
+                        <td>@item.ProductId</td>
+                        <td>@item.Product?.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("#,##0 VNĐ")</td>
+                        <td>@subTotal.ToString("#,##0 VNĐ")</td>
+                    </tr>
+            }
+            <tr>
+                <td colspan="7" class="text-end fw-bold">Tổng Thành Tiền:</td>
+                <td>@totalAmount.ToString("#,##0 VNĐ")</td>
+            </tr>
+
+            @{
+                decimal discountValue = Convert.ToDecimal(ViewBag.DiscountValue ?? 0);
+                string discountType = ViewBag.DiscountType?.ToString() ?? "";
+                decimal discountAmount = 0;
+                decimal finalTotal = totalAmount;
+
+                if (discountValue > 0)
+                {
+                    if (discountType == "Percent")
+                    {
+                        discountAmount = totalAmount * discountValue / 100;
+                    }
+                    else
+                    {
+                        discountAmount = discountValue;
+                    }
+
+                    finalTotal = totalAmount - discountAmount;
+                }
+            }
+
+            @if (discountValue > 0)
+            {
+                    <tr>
+                        <td colspan="7" class="text-end fw-bold">Giảm Giá:</td>
+                        <td class="fw-bold text-danger">
+                        @discountAmount.ToString("#,##0 VNĐ")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" class="text-end fw-bold">Tổng Thành Tiền Sau Giảm:</td>
+                        <td class="fw-bold text-success">@finalTotal.ToString("#,##0 VNĐ")</td>
+                    </tr>
+            }
+            <tr>
+                <td>
+                    @if (@ViewBag.Status != 3)
+                    {
+                        <select class="form-control select-update-order">
+                            <option value="1">Đã Đặt Hàng</option>
+                            <option value="2">Đã Giao Hàng</option>
+                            <option value="0">Đã Huỷ</option>
+                        </select>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.select-update-order').change(function () {
+                var status = $(this).val();
+                var orderCode = $('.getId').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UpdateView")",
+                    data: { status: status, orderCode: orderCode },
+
+                    success: function (result) {
+                        if (result.success) {
+                            Swal.fire({
+                                title: "Order status updated successfully.",
+                                icon: "success"
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Order status update failed.",
+                                icon: "error"
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

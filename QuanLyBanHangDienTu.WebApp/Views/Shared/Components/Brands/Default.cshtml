@@ -1,0 +1,12 @@
+﻿@model IEnumerable<BrandModel>
+
+<ul class="nav nav-pills nav-stacked">
+    @foreach (var item in Model)
+    {
+        <li>
+            <a asp-controller="Brand" asp-action="Index" asp-route-Slug="@item.Slug">
+                @item.Name
+            </a>
+        </li>
+    }
+</ul>

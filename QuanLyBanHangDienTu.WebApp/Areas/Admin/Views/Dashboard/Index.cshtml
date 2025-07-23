@@ -1,0 +1,105 @@
+﻿@model StatisticalFilterViewModel
+@using System.Text.Json
+@using QuanLyBanHangDienTu.WebApp.Models
+@using QuanLyBanHangDienTu.WebApp.Models.Statistical
+
+@{
+    ViewData["Title"] = "Thống Kê";
+    var revenueChartData = ViewBag.RevenueChartData as List<RevenueChartViewModel> ?? new();
+    var selectedCategory = ViewBag.SelectedCategory as int?;
+    var selectedBrand = ViewBag.SelectedBrand as int?;
+}
+
+<style>
+    .vertical-middle {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="">
+    <!-- FORM LỌC -->
+    <form method="GET" class="mb-4">
+        <table class="table table-bordered w-auto">
+            <tr>
+                <th scope="col" style="vertical-align: middle;"><label>Từ Ngày:</label></th>
+                <td><input asp-for="FromDate" type="date" class="form-control" /></td>
+                <th scope="col" style="vertical-align: middle;"><label>Đến Ngày:</label></th>
+                <td><input asp-for="ToDate" type="date" class="form-control" /></td>
+            </tr>
+            <tr>
+                <th scope="col" style="vertical-align: middle;">Danh Mục:</th>
+                <td>
+                    <select name="CategoryId" class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        @foreach (var cat in ViewBag.Categories as List<CategoryModel> ?? new List<CategoryModel>())
+                        {
+                            <option value="@cat.Id" selected="@(selectedCategory == cat.Id ? "selected" : null)">@cat.Name</option>
+                        }
+                    </select>
+                </td>
+                <th scope="col" style="vertical-align: middle;">Thương Hiệu:</th>
+                <td>
+                    <select name="BrandId" class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        @foreach (var br in ViewBag.Brands as List<BrandModel> ?? new List<BrandModel>())
+                        {
+                            <option value="@br.Id" selected="@(selectedBrand == br.Id ? "selected" : null)">@br.Name</option>
+                        }
+                    </select>
+                </td>
+                <td><button type="submit" class="btn btn-warning">Lọc</button></td>
+            </tr>
+        </table>
+    </form>   
+</div>
+
+<!-- BẢNG THỐNG KÊ -->
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Ảnh</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Tên Sản Phẩm</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Số Lượng Đã Bán</th>
+            <th scope="col" class="text-center text-success" style="vertical-align: middle;">Có Mã Giảm Giá</th>
+            <th scope="col" class="text-center text-danger" style="vertical-align: middle;">Không Có Mã Giảm Giá</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Doanh Thu Ban Đầu</th>
+            <th scope="col" class="text-center text-success" style="vertical-align: middle;">Doanh Thu Có Mã Giảm Giá</th>
+            <th scope="col" class="text-center text-danger" style="vertical-align: middle;">Doanh Thu Không Có Mã Giảm Giá</th>
+            <th scope="col" class="text-center text-primary" style="vertical-align: middle;">Tiền Giảm Giá</th>
+            <th scope="col" class="text-center text-warning" style="vertical-align: middle;">Doanh Thu Cuối Cùng</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Giá Vốn</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Lợi Nhuận Ban Đầu</th>
+            <th scope="col" class="text-center text-success" style="vertical-align: middle;">Lợi Nhuận Có Mã Giảm Giá</th>
+            <th scope="col" class="text-center text-danger" style="vertical-align: middle;">Lợi Nhuận Không Mã Giảm Giá</th>
+            <th scope="col" class="text-center text-warning" style="vertical-align: middle;">Lợi Nhuận Cuối Cùng</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Ngày Bán Đầu</th>
+            <th scope="col" class="text-center" style="vertical-align: middle;">Ngày Bán Cuối</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Statistics!)
+        {
+            <tr>
+                <td><img src="@Url.Content($"~/media/products/{item.Image}")" style="max-width: 70px; max-height: 70px;" /></td>
+                <td>@item.ProductName</td>
+                <td>@item.TotalQuantitySold</td>
+                <td class="text-success fw-bold">@item.QuantityWithCoupon</td>
+                <td class="text-danger fw-bold">@item.QuantityWithoutCoupon</td>
+                <td>@item.TotalRevenue.ToString("#,##0 VNĐ")</td>
+                <td class="text-success">@item.RevenueWithCoupon.ToString("#,##0 VNĐ")</td>
+                <td class="text-danger">@item.RevenueWithoutCoupon.ToString("#,##0 VNĐ")</td>
+                <td class="text-primary">@item.TotalDiscountCoupon.ToString("#,##0 VNĐ")</td>
+                <td>@item.RevenueAfterDiscount.ToString("#,##0 VNĐ")</td>
+                <td>@item.TotalCost.ToString("#,##0 VNĐ")</td>
+                <td>@item.TotalProfit.ToString("#,##0 VNĐ")</td>
+                <td class="text-success">@item.ProfitWithCoupon.ToString("#,##0 VNĐ")</td>
+                <td class="text-danger">@item.ProfitWithoutCoupon.ToString("#,##0 VNĐ")</td>
+                <td class="text-warning">@item.ProfitAfterDiscount.ToString("#,##0 VNĐ")</td>
+                <td>@item.FirstSoldDate.ToString()</td>
+                <td>@item.LastSoldDate.ToString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

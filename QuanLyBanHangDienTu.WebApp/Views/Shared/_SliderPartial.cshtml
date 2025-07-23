@@ -1,0 +1,41 @@
+﻿@{
+	int index = 0;
+	var sliders = ViewBag.Sliders as List<SliderModel>;
+}
+
+@if (sliders != null && sliders.Any())
+{
+	<section id="slider">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							@for (int i = 0; i < sliders.Count; i++)
+							{
+								<li data-target="#slider-carousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+							}
+						</ol>
+						<div class="carousel-inner">
+							@foreach (var slider in sliders)
+							{
+								<div class="item @(index == 0 ? "active" : "")">
+									<div class="col-sm-12">
+										<img src="~/media/sliders/@slider.Image" width="900px" height="450px" />
+									</div>
+								</div>
+								index++;
+							}
+						</div>
+						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+							<i class="fa fa-angle-left"></i>
+						</a>
+						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+							<i class="fa fa-angle-right"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}

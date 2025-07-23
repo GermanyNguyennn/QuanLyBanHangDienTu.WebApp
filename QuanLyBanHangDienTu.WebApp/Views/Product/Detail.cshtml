@@ -1,0 +1,151 @@
+﻿
+@* <style> *@
+@* 	.table.table-bordered, *@
+@* 	.table.table-bordered th, *@
+@* 	.table.table-bordered td { *@
+@* 		border: none !important; *@
+@* 	} *@
+@* </style> *@
+
+<div class="col-sm-12 padding-right">
+	<div class="product-details">
+		<div class="col-sm-4">
+			<div class="view-product">
+				<img src="@Url.Content($"~/media/products/{Model.Product.Image}")" alt="@Model.Product.Name" />
+			</div>
+			<div id="similar-product" class="carousel slide" data-ride="carousel">	
+
+				<div class="carousel-inner">
+					<div class="item active">
+						
+					</div>
+				</div>
+
+				<a class="left item-control" href="#similar-product" data-slide="prev">
+					<i class="fa fa-angle-left"></i>
+				</a>
+				<a class="right item-control" href="#similar-product" data-slide="next">
+					<i class="fa fa-angle-right"></i>
+				</a>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<div class="product-information">	
+				<span>
+					<span>
+						@Model.Product.Name
+					</span>
+				</span>
+				<table class="table table-bordered">
+					<tr>
+						<th style="vertical-align: middle;">Giá:</th>
+							<td>
+								<span>
+									<span>
+										@Model.Product.Price.ToString("#,##0 VNĐ")
+									</span>
+								</span>
+							</td>
+						</tr>
+					<tr>
+						<th>Màu Sắc:</th>
+						<td>@Model.Product.Color</td>
+					</tr>
+					<tr>
+						<th>Phiên Bản:</th>
+						<td>@Model.Product.Version</td>
+					</tr>
+					<tr>
+						<th>Danh Mục:</th>
+						<td>@Model.Category.Name</td>
+					</tr>
+					<tr>
+						<th>Thương Hiệu:</th>
+						<td>@Model.Brand.Name</td>
+					</tr>
+					<tr>
+						<th>Công Ty:</th>
+						<td>@Model.Company.Name</td>
+					</tr>
+				</table>
+				@if (Model.Product.Quantity > 0)
+				{
+					<a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-Id="@Model.Product.Id">
+						<i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+					</a>
+				}
+				else
+				{
+					<a class="btn btn-default add-to-cart">
+						<i class="fa fa-shopping-cart"></i> Hết Hàng
+					</a>
+				}
+			</div>
+		</div>
+	</div>
+
+	<div class="category-tab shop-details-tab">
+		<div class="col-sm-12">
+			<ul class="nav nav-tabs">
+				<li><a href="#details" data-toggle="tab">Chi Tiết</a></li>
+				<li><a href="#specs" data-toggle="tab">Thông Số Kỹ Thuật</a></li>
+				<li class="active"><a href="#reviews" data-toggle="tab">Đánh Giá</a></li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div class="tab-pane fade" id="details">
+				@Html.Raw(@Model.Product.Description)
+			</div>
+
+			<div class="tab-pane fade" id="specs">
+				<table class="table table-bordered">
+					@if (Model.Product.CategoryId == 1 && Model.PhoneDetail != null)
+					{
+						<tr><th>Màn hình</th><td>@Model.PhoneDetail.ScreenSize</td></tr>
+						<tr><th>Công nghệ hiển thị</th><td>@Model.PhoneDetail.DisplayTechnology</td></tr>
+						<tr><th>Camera sau</th><td>@Model.PhoneDetail.RearCamera</td></tr>
+						<tr><th>Camera trước</th><td>@Model.PhoneDetail.FrontCamera</td></tr>
+						<tr><th>Chipset</th><td>@Model.PhoneDetail.ChipSet</td></tr>
+						<tr><th>NFC</th><td>@(Model.PhoneDetail.NFC == true ? "Có" : "Không")</td></tr>
+						<tr><th>RAM</th><td>@Model.PhoneDetail.RAMCapacity</td></tr>
+						<tr><th>Bộ nhớ trong</th><td>@Model.PhoneDetail.InternalStorage</td></tr>
+						<tr><th>SIM</th><td>@Model.PhoneDetail.SimCard</td></tr>
+						<tr><th>Hệ điều hành</th><td>@Model.PhoneDetail.OperatingSystem</td></tr>
+						<tr><th>Độ phân giải</th><td>@Model.PhoneDetail.DisplayResolution</td></tr>
+						<tr><th>Tính năng màn hình</th><td>@Model.PhoneDetail.DisplayFeatures</td></tr>
+						<tr><th>CPU</th><td>@Model.PhoneDetail.CPUType</td></tr>
+					}
+					else if (Model.Product.CategoryId == 2 && Model.LaptopDetail != null)
+					{
+						<tr><th>Card đồ họa</th><td>@Model.LaptopDetail.GraphicsCardType</td></tr>
+						<tr><th>RAM</th><td>@Model.LaptopDetail.RAMCapacity</td></tr>
+						<tr><th>Loại RAM</th><td>@Model.LaptopDetail.RAMType</td></tr>
+						<tr><th>Ổ cứng</th><td>@Model.LaptopDetail.HardDrive</td></tr>
+						<tr><th>Kích thước màn hình</th><td>@Model.LaptopDetail.ScreenSize</td></tr>
+						<tr><th>Công nghệ màn hình</th><td>@Model.LaptopDetail.ScreenTechnology</td></tr>
+						<tr><th>Pin</th><td>@Model.LaptopDetail.Battery</td></tr>
+						<tr><th>Hệ điều hành</th><td>@Model.LaptopDetail.OperatingSystem</td></tr>
+						<tr><th>Độ phân giải màn hình</th><td>@Model.LaptopDetail.ScreenResolution</td></tr>
+						<tr><th>CPU</th><td>@Model.LaptopDetail.CPUType</td></tr>
+						<tr><th>Cổng giao tiếp</th><td>@Model.LaptopDetail.Interface</td></tr>
+					}
+				</table>
+			</div>
+
+			<div class="tab-pane fade active in" id="reviews">
+				<div class="col-sm-12">
+					<p>Viết Đánh Giá Của Bạn Về Sản Phẩm <b>@Model.Product.Name</b></p>
+					<form action="#">
+						<span>
+							<input type="text" placeholder="Họ Và Tên" />
+							<input type="email" placeholder="Email" />
+						</span>
+						<textarea name="" placeholder="Tin Nhắn"></textarea>
+						<button type="button" class="col-sm-12 btn btn-default">Gửi</button>
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
