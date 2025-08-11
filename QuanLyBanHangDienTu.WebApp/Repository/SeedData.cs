@@ -45,40 +45,25 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                 }
             }
 
-            if (!context.Products.Any())
+            if (!context.Brands.Any())
             {
-                // Seed Companies
-                var apple = new CompanyModel { Name = "Apple", Description = "", Slug = "apple", Status = 1 };
-                var microsoft = new CompanyModel { Name = "Microsoft", Description = "", Slug = "microsoft", Status = 1 };
-                await context.Companies.AddRangeAsync(apple, microsoft);
-                await context.SaveChangesAsync(); // ✅ Đảm bảo Id được sinh
-
                 // Seed Brands
                 var iphone = new BrandModel { Name = "Iphone", Description = "", Slug = "iphone", Status = 1 };
                 var mac = new BrandModel { Name = "Mac", Description = "", Slug = "mac", Status = 1 };
                 var windows = new BrandModel { Name = "Windows", Description = "", Slug = "windows", Status = 1 };
                 await context.Brands.AddRangeAsync(iphone, mac, windows);
                 await context.SaveChangesAsync(); // ✅ Đảm bảo Id được sinh
+              
+            }
 
+            if (!context.Categories.Any())
+            {
                 // Seed Categories
                 var phone = new CategoryModel { Name = "Phone", Description = "", Slug = "phone", Status = 1 };
                 var laptop = new CategoryModel { Name = "Laptop", Description = "", Slug = "laptop", Status = 1 };
                 await context.Categories.AddRangeAsync(phone, laptop);
-                await context.SaveChangesAsync(); // ✅ Đảm bảo Id được sinh
-
-                // Seed Products (sử dụng các đối tượng đã có Id)
-                await context.Products.AddRangeAsync(
-                    new ProductModel { Name = "MacBook Air M4 15 inch 2025 10CPU 10GPU 24GB 512GB Sạc 70W", Image = "macbook-air.jpg", Description = "", Color = "Gold", Version = "1TB", Price = 42490000, Slug = "", BrandId = mac.Id, CategoryId = laptop.Id, CompanyId = apple.Id, Quantity = 100 },
-                    new ProductModel { Name = "MacBook Pro 16 M4 Max 16CPU 40GPU 64GB 2TB", Image = "macbook-pro.jpg", Description = "", Color = "Gold", Version = "1TB", Price = 117490000, Slug = "", BrandId = mac.Id, CategoryId = laptop.Id, CompanyId = apple.Id, Quantity = 100 },
-
-                    new ProductModel { Name = "iPhone 16 Pro Max 1TB | Chính hãng VN/A", Image = "iphone-16-pro-max.jpg", Description = "", Color = "Gold", Version = "1TB", Price = 42690000, Slug = "", BrandId = iphone.Id, CategoryId = phone.Id, CompanyId = apple.Id, Quantity = 100 },
-                    new ProductModel { Name = "iPhone 16 Pro 1TB | Chính hãng VN/A", Image = "iphone-16-pro.jpg", Description = "", Color = "Gold", Version = "1TB", Price = 38990000, Slug = "", BrandId = iphone.Id, CategoryId = phone.Id, CompanyId = apple.Id, Quantity = 100 },
-                    new ProductModel { Name = "iPhone 16 Plus 512GB | Chính hãng VN/A", Image = "iphone-16-plus.jpg", Description = "", Color = "Gold", Version = "1TB", Price = 38990000, Slug = "", BrandId = iphone.Id, CategoryId = phone.Id, CompanyId = apple.Id, Quantity = 100 },
-                    new ProductModel { Name = "iPhone 16 512GB | Chính hãng VN/A", Image = "iphone-16.jpg", Description = "", Color = "Gold", Version = "1TB", Price = 38990000, Slug = "", BrandId = iphone.Id, CategoryId = phone.Id, CompanyId = apple.Id, Quantity = 100 },
-                    new ProductModel { Name = "iPhone 16e 512GB | Chính hãng VN/A", Image = "iphone-16e.jpg", Description = "", Color = "Gold", Version = "1TB", Price = 25490000, Slug = "", BrandId = iphone.Id, CategoryId = phone.Id, CompanyId = apple.Id, Quantity = 100 }
-                );
-                await context.SaveChangesAsync();
-            }
+                await context.SaveChangesAsync(); // ✅ Đảm bảo Id được sinh              
+            }    
 
             if (!context.Contacts.Any())
             {

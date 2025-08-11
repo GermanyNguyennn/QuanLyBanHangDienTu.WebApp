@@ -33,7 +33,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             var data = await _dataContext.Products
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
-                .Include(p => p.Company)
                 .OrderBy(p => p.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -174,7 +173,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         {
             ViewBag.Categories = new SelectList(_dataContext.Categories, "Id", "Name", categoryId);
             ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", brandId);
-            ViewBag.Companies = new SelectList(_dataContext.Companies, "Id", "Name", companyId);
         }
 
         private async Task<string> SaveImageAsync(IFormFile image)
@@ -220,7 +218,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
                         ProductId = product.Id,
                         CategoryId = product.CategoryId,
                         BrandId = product.BrandId,
-                        CompanyId = product.CompanyId
                     };
 
                 return View("ViewDetailPhone", detail);
@@ -233,7 +230,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
                         ProductId = product.Id,
                         CategoryId = product.CategoryId,
                         BrandId = product.BrandId,
-                        CompanyId = product.CompanyId
                     };
 
                 return View("ViewDetailLaptop", detail);
@@ -264,7 +260,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
                 detail.ProductId = productId;
                 detail.CategoryId = categoryId;
                 detail.BrandId = int.Parse(form["BrandId"]!);
-                detail.CompanyId = int.Parse(form["CompanyId"]!);
                 detail.ScreenSize = form["ScreenSize"]!;
                 detail.DisplayTechnology = form["DisplayTechnology"]!;
                 detail.RearCamera = form["RearCamera"]!;
@@ -296,7 +291,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
                 detail.ProductId = productId;
                 detail.CategoryId = categoryId;
                 detail.BrandId = int.Parse(form["BrandId"]!);
-                detail.CompanyId = int.Parse(form["CompanyId"]!);
                 detail.GraphicsCardType = form["GraphicsCardType"]!;
                 detail.RAMCapacity = form["RAMCapacity"]!;
                 detail.RAMType = form["RAMType"]!;

@@ -19,7 +19,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             var products = _dataContext.Products
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
-                .Include(p => p.Company)
                 .ToListAsync();
 
             ViewBag.Sliders = await _dataContext.Sliders
@@ -34,7 +33,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             var product = await _dataContext.Products
             .Include(p => p.Category)
             .Include(p => p.Brand)
-            .Include(p => p.Company)
             .FirstOrDefaultAsync(p => p.Id == id);
 
 
@@ -83,7 +81,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             var products = await _dataContext.Products
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
-                .Include(p => p.Company)
                 .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
                 .ToListAsync();
 

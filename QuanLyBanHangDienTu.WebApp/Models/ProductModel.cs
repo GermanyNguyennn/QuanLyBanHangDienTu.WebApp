@@ -27,8 +27,6 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public CategoryModel? Category { get; set; }
         [ForeignKey("BrandId")]
         public BrandModel? Brand { get; set; }
-        [ForeignKey("CompanyId")]
-        public CompanyModel? Company { get; set; }
 
         [NotMapped]
         [FileExtension]

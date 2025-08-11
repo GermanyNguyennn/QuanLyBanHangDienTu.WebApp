@@ -14,9 +14,6 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public int BrandId { get; set; }
         [ForeignKey("BrandId")]
         public BrandModel? Brand { get; set; }
-        public int CompanyId { get; set; }
-        [ForeignKey("CompanyId")]
-        public CompanyModel? Company { get; set; }
         public string? GraphicsCardType { get; set; } // Card đồ hoạ
         public string? RAMCapacity { get; set; } // RAM
         public string? RAMType { get; set; } // Loại RAM

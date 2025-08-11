@@ -260,37 +260,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.CompanyModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Companies");
-                });
-
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.ContactModel", b =>
                 {
                     b.Property<int>("Id")
@@ -494,6 +463,9 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
@@ -504,6 +476,8 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CouponId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -526,9 +500,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -573,8 +544,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CompanyId");
-
                     b.HasIndex("ProductId")
                         .IsUnique();
 
@@ -600,9 +569,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
 
                     b.Property<string>("ChipSet")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -649,8 +615,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CompanyId");
-
                     b.HasIndex("ProductId")
                         .IsUnique();
 
@@ -682,9 +646,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CompanyModelId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -731,10 +692,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CategoryModelId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("CompanyModelId");
 
                     b.ToTable("Products");
                 });
@@ -967,7 +924,13 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .WithMany()
                         .HasForeignKey("CouponId");
 
+                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Coupon");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.ProductDetailLaptopModel", b =>
@@ -984,12 +947,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.CompanyModel", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.ProductModel", "Product")
                         .WithOne("ProductDetailLaptops")
                         .HasForeignKey("QuanLyBanHangDienTu.WebApp.Models.ProductDetailLaptopModel", "ProductId")
@@ -999,8 +956,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
-
-                    b.Navigation("Company");
 
                     b.Navigation("Product");
                 });
@@ -1019,12 +974,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.CompanyModel", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.ProductModel", "Product")
                         .WithOne("ProductDetailPhones")
                         .HasForeignKey("QuanLyBanHangDienTu.WebApp.Models.ProductDetailPhoneModel", "ProductId")
@@ -1034,8 +983,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
-
-                    b.Navigation("Company");
 
                     b.Navigation("Product");
                 });
@@ -1062,21 +1009,9 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .WithMany("Product")
                         .HasForeignKey("CategoryModelId");
 
-                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.CompanyModel", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.CompanyModel", null)
-                        .WithMany("Product")
-                        .HasForeignKey("CompanyModelId");
-
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.BrandModel", b =>
@@ -1085,11 +1020,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 });
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.CategoryModel", b =>
-                {
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.CompanyModel", b =>
                 {
                     b.Navigation("Product");
                 });

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuanLyBanHangDienTu.WebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class _23072025 : Migration
+    public partial class _11082025 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -88,23 +88,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Companies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,10 +295,10 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -350,8 +333,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BrandModelId = table.Column<int>(type: "int", nullable: true),
-                    CategoryModelId = table.Column<int>(type: "int", nullable: true),
-                    CompanyModelId = table.Column<int>(type: "int", nullable: true)
+                    CategoryModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -378,17 +360,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         column: x => x.CategoryModelId,
                         principalTable: "Categories",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Products_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Products_Companies_CompanyModelId",
-                        column: x => x.CompanyModelId,
-                        principalTable: "Companies",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -398,6 +369,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CouponId = table.Column<int>(type: "int", nullable: true),
                     CouponCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -416,6 +388,11 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Orders_Coupons_CouponId",
                         column: x => x.CouponId,
                         principalTable: "Coupons",
@@ -431,7 +408,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
                     GraphicsCardType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RAMCapacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RAMType = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -462,12 +438,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductDetailLaptops_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_ProductDetailLaptops_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
@@ -484,7 +454,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
                     ScreenSize = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayTechnology = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RearCamera = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -513,12 +482,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         name: "FK_ProductDetailPhones_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductDetailPhones_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -620,6 +583,11 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 column: "CouponId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductDetailLaptops_BrandId",
                 table: "ProductDetailLaptops",
                 column: "BrandId");
@@ -628,11 +596,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 name: "IX_ProductDetailLaptops_CategoryId",
                 table: "ProductDetailLaptops",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductDetailLaptops_CompanyId",
-                table: "ProductDetailLaptops",
-                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductDetailLaptops_ProductId",
@@ -649,11 +612,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 name: "IX_ProductDetailPhones_CategoryId",
                 table: "ProductDetailPhones",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductDetailPhones_CompanyId",
-                table: "ProductDetailPhones",
-                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductDetailPhones_ProductId",
@@ -680,16 +638,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 name: "IX_Products_CategoryModelId",
                 table: "Products",
                 column: "CategoryModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_CompanyId",
-                table: "Products",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_CompanyModelId",
-                table: "Products",
-                column: "CompanyModelId");
         }
 
         /// <inheritdoc />
@@ -738,13 +686,13 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Coupons");
@@ -754,9 +702,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Companies");
         }
     }
 }

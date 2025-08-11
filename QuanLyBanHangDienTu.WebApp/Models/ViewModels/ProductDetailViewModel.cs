@@ -8,6 +8,5 @@
 
         public CategoryModel Category => Product?.Category!;
         public BrandModel Brand => Product?.Brand!;
-        public CompanyModel Company => Product?.Company!;
     }
 }

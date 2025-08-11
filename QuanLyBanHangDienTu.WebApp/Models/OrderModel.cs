@@ -8,14 +8,21 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         [Key]
         public int Id { get; set; }
         public string? OrderCode { get; set; }
+
+        public string? UserId { get; set; }
+        [ForeignKey("UserId")]
+        public UserModel? User { get; set; }
+
         public string? UserName { get; set; }
+
         public int? CouponId { get; set; }
+        [ForeignKey("CouponId")]
+        public CouponModel? Coupon { get; set; }
+
         public string? CouponCode { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int Status { get; set; }
         public string? PaymentMethod { get; set; }
-        [ForeignKey("CouponId")]
-        public CouponModel? Coupon { get; set; }
         public ICollection<OrderDetailModel> OrderDetail { get; set; } = new List<OrderDetailModel>();
 
         public string FullName { get; set; }

@@ -16,9 +16,6 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public int BrandId { get; set; }
         [ForeignKey("BrandId")]
         public BrandModel? Brand { get; set; }
-        public int CompanyId { get; set; }
-        [ForeignKey("CompanyId")]
-        public CompanyModel? Company { get; set; }
         public string? ScreenSize { get; set; } // Kích thước màn hình
         public string? DisplayTechnology { get; set; } // Công nghệ hiển thị
         public string? RearCamera { get; set; } // Camera sau

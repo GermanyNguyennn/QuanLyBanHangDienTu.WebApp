@@ -47,17 +47,10 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<ProductModel>()
-                .HasOne(p => p.Company)
-                .WithMany()
-                .HasForeignKey(p => p.CompanyId)
-                .OnDelete(DeleteBehavior.Restrict);
-
         }
 
         public DbSet<BrandModel> Brands { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
-        public DbSet<CompanyModel> Companies { get; set; }
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<OrderModel> Orders { get; set; }
         public DbSet<OrderDetailModel> OrderDetails { get; set; }
