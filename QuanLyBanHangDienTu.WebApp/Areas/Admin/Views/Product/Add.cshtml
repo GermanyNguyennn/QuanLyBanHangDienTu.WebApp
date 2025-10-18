@@ -20,7 +20,7 @@
         <tr>
             <th style="vertical-align: middle;"><label>Ảnh</label></th>
             <td>
-                <input asp-for="ImageUpload" class="form-control" />
+                <input asp-for="ImageUpload" type="file" class="form-control" />
                 <span asp-validation-for="ImageUpload" class="text-danger"></span>
                 <img id="imgpreview" class="pt-2" />
             </td>
@@ -80,7 +80,7 @@
             <th style="vertical-align: middle;"><label>Danh Mục</label></th>
             <td>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
-                    <option>-- Lựa Chọn --</option>
+                        <option value="">-- Lựa Chọn --</option>
                 </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </td>
@@ -90,19 +90,9 @@
             <th style="vertical-align: middle;"><label>Thương Hiệu</label></th>
             <td>
                 <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
-                    <option>-- Lựa Chọn --</option>
+                        <option value="">-- Lựa Chọn --</option>
                 </select>
                 <span asp-validation-for="BrandId" class="text-danger"></span>
-            </td>
-        </tr>
-
-        <tr>
-            <th style="vertical-align: middle;"><label>Công Ty</label></th>
-            <td>
-                <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.Companies">
-                    <option>-- Lựa Chọn --</option>
-                </select>
-                <span asp-validation-for="CompanyId" class="text-danger"></span>
             </td>
         </tr>
 

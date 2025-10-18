@@ -34,7 +34,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                 .HasForeignKey(o => o.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Tùy chỉnh nếu cần: Brand, Category, Company không cần cascade
+            // Tùy chỉnh nếu cần: Brand, Category không cần cascade
             modelBuilder.Entity<ProductModel>()
                 .HasOne(p => p.Brand)
                 .WithMany()

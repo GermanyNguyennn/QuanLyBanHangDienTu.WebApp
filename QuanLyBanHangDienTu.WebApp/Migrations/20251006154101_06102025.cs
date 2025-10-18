@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuanLyBanHangDienTu.WebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class _11082025 : Migration
+    public partial class _06102025 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -330,7 +330,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BrandModelId = table.Column<int>(type: "int", nullable: true),
                     CategoryModelId = table.Column<int>(type: "int", nullable: true)

@@ -53,7 +53,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ProductModel productModel)
         {
-            SetSelectLists(productModel.CategoryId, productModel.BrandId, productModel.CompanyId);
+            SetSelectLists(productModel.CategoryId, productModel.BrandId);
 
             if (!ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProductModel productModel)
         {
-            SetSelectLists(productModel.CategoryId, productModel.BrandId, productModel.CompanyId);
+            SetSelectLists(productModel.CategoryId, productModel.BrandId);
 
             var existingProduct = await _dataContext.Products.FindAsync(id);
             if (existingProduct == null) return NotFound();
@@ -130,7 +130,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             existingProduct.Quantity = productModel.Quantity;
             existingProduct.CategoryId = productModel.CategoryId;
             existingProduct.BrandId = productModel.BrandId;
-            existingProduct.CompanyId = productModel.CompanyId;
 
             _dataContext.Update(existingProduct);
             await _dataContext.SaveChangesAsync();

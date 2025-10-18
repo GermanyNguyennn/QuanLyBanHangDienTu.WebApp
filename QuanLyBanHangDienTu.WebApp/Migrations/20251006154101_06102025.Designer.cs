@@ -12,8 +12,8 @@ using QuanLyBanHangDienTu.WebApp.Repository;
 namespace QuanLyBanHangDienTu.WebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250811094603_11082025")]
-    partial class _11082025
+    [Migration("20251006154101_06102025")]
+    partial class _06102025
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -647,9 +647,6 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");

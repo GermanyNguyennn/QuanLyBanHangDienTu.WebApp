@@ -16,7 +16,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var products = _dataContext.Products
+            var products = await _dataContext.Products
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .ToListAsync();

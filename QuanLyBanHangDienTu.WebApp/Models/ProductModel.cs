@@ -20,7 +20,6 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public string Slug { get; set; }
         public int BrandId { get; set; }
         public int CategoryId { get; set; }
-        public int CompanyId { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         [ForeignKey("CategoryId")]
