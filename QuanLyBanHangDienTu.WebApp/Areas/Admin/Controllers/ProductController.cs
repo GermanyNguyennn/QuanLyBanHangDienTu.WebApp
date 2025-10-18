@@ -168,7 +168,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return View(products);
         }      
 
-        private void SetSelectLists(int? categoryId = null, int? brandId = null, int? companyId = null)
+        private void SetSelectLists(int? categoryId = null, int? brandId = null)
         {
             ViewBag.Categories = new SelectList(_dataContext.Categories, "Id", "Name", categoryId);
             ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", brandId);

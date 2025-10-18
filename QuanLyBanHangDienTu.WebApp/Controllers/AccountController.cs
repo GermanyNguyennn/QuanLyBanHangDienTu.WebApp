@@ -11,18 +11,46 @@ using QuanLyBanHangDienTu.WebApp.Repository;
 
 namespace QuanLyBanHangDienTu.WebApp.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         private readonly IEmailSender _emailSender;
         private readonly DataContext _dataContext;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
 
 
-        public AccountController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IEmailSender emailSender, DataContext dataContext, RoleManager<IdentityRole> roleManager) : base(userManager, signInManager)
+        public AccountController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IEmailSender emailSender, DataContext dataContext, RoleManager<IdentityRole> roleManager)
         {
             _emailSender = emailSender;
             _dataContext = dataContext;
             _roleManager = roleManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            await Set2FAStatusAsync();
+            return View();
+        }
+
+        public async Task Set2FAStatusAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var is2FAEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+                var isRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
+
+                ViewBag.Is2FACompleted = !is2FAEnabled || isRemembered;
+                ViewBag.IsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            }
+            else
+            {
+                ViewBag.Is2FACompleted = false;
+                ViewBag.IsAdmin = false;
+            }
         }
 
         private async Task<UserModel?> GetUserFromContextAsync()
@@ -58,8 +86,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                    $"?secret={key}&issuer={Uri.EscapeDataString(issuer)}";
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> Enable2FA()
         {
@@ -74,8 +100,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             ViewBag.Key = key;
             return View();
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Enable2FA(string verificationCode)
@@ -100,10 +124,98 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Verify2FA()
         {
-            await Set2FAStatusAsync();
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Verify2FA(string verificationCode)
+        {
+            if (string.IsNullOrWhiteSpace(verificationCode))
+            {
+                TempData["error"] = "Please enter verification code.";
+                return View();
+            }
+
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null) return RedirectToAction("Login");
+
+            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(verificationCode, false, false);
+
+            if (result.Succeeded)
+            {
+                HttpContext.Session.SetString("Is2FACompleted", "true");
+                HttpContext.Session.SetString("IsAdmin", (await _userManager.IsInRoleAsync(user, "Admin")) ? "true" : "false");
+                TempData["success"] = "Log in successfully.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (result.IsLockedOut) return RedirectToAction("Lockout", "Account");
+
+            TempData["error"] = "Invalid Verification Code.";
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Reset2FA()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reset2FA(Reset2FAViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email!);
+            if (user == null || !await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                TempData["error"] = "Email does not exist.";
+                return View();
+            }
+
+            var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "Reset2FA");
+            var resetLink = Url.Action("ConfirmReset2FA", "Account", new { userId = user.Id, token }, Request.Scheme);
+
+            await _emailSender.SendEmailAsync(model.Email!, "Reset 2FA", $"Ấn Vào <a href='{resetLink}'>Đây</a> Để Đặt Lại Xác Thực 2 Bước.");
+            TempData["success"] = "A 2FA reset link has been sent to your email.";
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmReset2FA(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var isValid = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "Reset2FA", token);
+            if (!isValid)
+            {
+                TempData["error"] = "The link is invalid or expired.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var disableResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
+            if (!disableResult.Succeeded)
+            {
+                TempData["error"] = "Unable to reset 2FA.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            TempData["success"] = "2FA reset successful. Please log in again to set up 2FA.";
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
@@ -154,106 +266,13 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             TempData["error"] = "Login failed. Check information again.";
             return View(model);
         }
-
-
-
-        [HttpGet]
-        public async Task<IActionResult> Verify2FA()
+        public async Task<IActionResult> Logout(string returnURL = "/")
         {
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            return View();
+            await _signInManager.SignOutAsync();
+            HttpContext.Session.Clear();
+            TempData["success"] = "Log out successfully.";
+            return Redirect(returnURL);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Verify2FA(string verificationCode)
-        {
-            if (string.IsNullOrWhiteSpace(verificationCode))
-            {
-                TempData["error"] = "Please enter verification code.";
-                return View();
-            }
-
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null) return RedirectToAction("Login");
-
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(verificationCode, false, false);
-
-            if (result.Succeeded)
-            {
-                HttpContext.Session.SetString("Is2FACompleted", "true");
-                HttpContext.Session.SetString("IsAdmin", (await _userManager.IsInRoleAsync(user, "Admin")) ? "true" : "false");
-                TempData["success"] = "Log in successfully.";
-                return RedirectToAction("Index", "Home");
-            }
-
-            if (result.IsLockedOut) return RedirectToAction("Lockout", "Account");
-
-            TempData["error"] = "Invalid Verification Code.";
-            return View();
-        }
-
-
-        [HttpGet]
-        public IActionResult Reset2FA()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reset2FA(Reset2FAViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
-
-            var user = await _userManager.FindByEmailAsync(model.Email!);
-            if (user == null || !await _userManager.IsInRoleAsync(user, "Admin"))
-            {
-                TempData["error"] = "Email does not exist.";
-                return View();
-            }
-
-            var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "Reset2FA");
-            var resetLink = Url.Action("ConfirmReset2FA", "Account", new { userId = user.Id, token }, Request.Scheme);
-
-            await _emailSender.SendEmailAsync(model.Email!, "Reset 2FA", $"Ấn Vào <a href='{resetLink}'>Đây</a> Để Đặt Lại Xác Thực 2 Bước.");
-            TempData["success"] = "A 2FA reset link has been sent to your email.";
-            return RedirectToAction("Login", "Account");
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> ConfirmReset2FA(string userId, string token)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var isValid = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "Reset2FA", token);
-            if (!isValid)
-            {
-                TempData["error"] = "The link is invalid or expired.";
-                return RedirectToAction("Login", "Account");
-            }
-
-            var disableResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
-            if (!disableResult.Succeeded)
-            {
-                TempData["error"] = "Unable to reset 2FA.";
-                return RedirectToAction("Login", "Account");
-            }
-
-            TempData["success"] = "2FA reset successful. Please log in again to set up 2FA.";
-            return RedirectToAction("Login", "Account");
-        }
-
-
 
         [HttpGet]
         public IActionResult Add()
@@ -298,15 +317,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                 ModelState.AddModelError("", error.Description);
 
             return View(registerViewModel);
-        }
-
-
-        public async Task<IActionResult> Logout(string returnURL = "/")
-        {
-            await _signInManager.SignOutAsync();
-            HttpContext.Session.Clear();
-            TempData["success"] = "Log out successfully.";
-            return Redirect(returnURL);
         }
 
         public async Task<IActionResult> History(int page = 1)
@@ -411,7 +421,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             });
         }
 
-
         [HttpPost]
         public async Task<IActionResult> UpdateNewPassword(ResetPasswordViewModel model)
         {
@@ -438,8 +447,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
 
             return View("NewPassword", model);
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> UserInformation()

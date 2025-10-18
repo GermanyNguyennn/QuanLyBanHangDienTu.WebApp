@@ -42,7 +42,10 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Add(ContactModel contactModel)
         {
             if (!ModelState.IsValid)
-                return HandleModelError(contactModel);
+            {
+                TempData["error"] = "Invalid data.";
+                return View(contactModel);
+            }
 
             if (contactModel.ImageUpload != null)
                 contactModel.LogoImage = await SaveImageAsync(contactModel.ImageUpload);
@@ -81,7 +84,10 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             }
 
             if (!ModelState.IsValid)
-                return HandleModelError(contactModel);
+            {
+                TempData["error"] = "Invalid data.";
+                return View(contactModel);
+            }
 
             if (contactModel.ImageUpload != null)
                 existedContact.LogoImage = await SaveImageAsync(contactModel.ImageUpload);
@@ -142,18 +148,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             }
 
             return imageName;
-        }
-
-        private IActionResult HandleModelError(ContactModel contactModel)
-        {
-            TempData["error"] = "Invalid data.";
-
-            var errors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage);
-
-            string errorMessage = string.Join("\n", errors);
-            return BadRequest(errorMessage);
-        }
+        }       
     }
 }
