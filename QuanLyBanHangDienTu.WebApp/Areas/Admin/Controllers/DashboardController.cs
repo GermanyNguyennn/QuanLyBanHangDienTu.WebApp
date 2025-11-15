@@ -18,6 +18,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             _dataContext = context;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(DateTime? fromDate, DateTime? toDate, int? categoryId, int? brandId, string statisticType = "day")
         {
             await LoadOverviewCounters();

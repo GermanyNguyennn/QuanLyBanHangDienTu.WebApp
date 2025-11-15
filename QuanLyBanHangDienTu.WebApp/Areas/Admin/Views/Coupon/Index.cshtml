@@ -48,7 +48,7 @@
                         <td>@coupon.EndDate.ToString("dd/MM/yyyy")</td>
                         <td>@coupon.Quantity</td>
                         <td>
-                            <form asp-action="ToggleStatus" method="POST" style="display:inline;">
+                            <form asp-action="Status" method="POST" style="display:inline;">
                                 <input type="hidden" name="Id" value="@coupon.Id" />
                                 <button type="submit" class="btn btn-sm @(coupon.Status == 1 ? "btn-success btn-sm" : "btn-danger btn-sm")">
                                 @(coupon.Status == 1 ? "ON" : "OFF")

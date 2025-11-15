@@ -14,6 +14,8 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         {
             _dataContext = context;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var products = await _dataContext.Products

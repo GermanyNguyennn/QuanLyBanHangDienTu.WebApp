@@ -70,7 +70,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             }
 
             if (productModel.ImageUpload != null)
-                productModel.Image = await SaveImageAsync(productModel.ImageUpload);
+                productModel.Image = await SaveImage(productModel.ImageUpload);
 
             _dataContext.Add(productModel);
 
@@ -112,7 +112,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
                 try
                 {
                     DeleteImage(existingProduct.Image!);
-                    existingProduct.Image = await SaveImageAsync(productModel.ImageUpload);
+                    existingProduct.Image = await SaveImage(productModel.ImageUpload);
                 }
                 catch (Exception ex)
                 {
@@ -138,6 +138,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _dataContext.Products.FindAsync(id);
@@ -174,7 +175,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             ViewBag.Brands = new SelectList(_dataContext.Brands, "Id", "Name", brandId);
         }
 
-        private async Task<string> SaveImageAsync(IFormFile image)
+        private async Task<string> SaveImage(IFormFile image)
         {
             var uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
             var fileName = Guid.NewGuid() + "_" + Path.GetFileName(image.FileName);
@@ -200,7 +201,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> IndexDetail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
             var product = await _dataContext.Products
                 .Include(p => p.Category)

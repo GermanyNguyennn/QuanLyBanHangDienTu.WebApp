@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuanLyBanHangDienTu.WebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class _06102025 : Migration
+    public partial class _15112025 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

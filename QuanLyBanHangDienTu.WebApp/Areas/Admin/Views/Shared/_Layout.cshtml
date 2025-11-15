@@ -49,31 +49,68 @@
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								@{
-									var is2FACompleted = Context.Session.GetString("Is2FACompleted") == "true";
 									var isAdmin = User.IsInRole("Admin");
 								}
 
 								@if (User.Identity?.IsAuthenticated ?? false)
 								{
-									if (!isAdmin || (isAdmin && is2FACompleted))
+									@* ADMIN *@
+									if (isAdmin)
 									{
-										if (isAdmin)
-										{
-											<li><a asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="fa fa-cogs"></i> Admin</a></li>
-										}
-
-										<li><a asp-area="" asp-controller="Account" asp-action="History"><i class="fa fa-history"></i> Lịch Sử</a></li>
-										<li><a asp-area="" asp-controller="Cart" asp-action="Index"><i class="fa fa-shopping-cart"></i> Giỏ Hàng</a></li>
-										<li><a asp-area="" asp-controller="Account" asp-action="UserInformation"><i class="fa fa-user"></i> Thông Tin Cá Nhân</a></li>
-										<li><a asp-area="" asp-controller="Account" asp-action="ChangePassword"><i class="fa fa-key"></i> Đổi Mật Khẩu</a></li>
+										<li>
+											<a asp-area="Admin" asp-controller="Product" asp-action="Index">
+												<i class="fa fa-cogs"></i> Admin
+											</a>
+										</li>
 									}
-									<li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i>Trang Chủ</a></li>
-									<li><a asp-area="" asp-controller="Account" asp-action="Logout"><i class="fa fa-lock"></i>Xin Chào, @User.Identity.Name. Đăng Xuất</a></li>
+
+									@* MENU NGƯỜI DÙNG *@
+									<li>
+										<a asp-area="" asp-controller="Account" asp-action="History">
+											<i class="fa fa-history"></i> Lịch Sử
+										</a>
+									</li>
+
+									<li>
+										<a asp-area="" asp-controller="Cart" asp-action="Index">
+											<i class="fa fa-shopping-cart"></i> Giỏ Hàng
+										</a>
+									</li>
+
+									<li>
+										<a asp-area="" asp-controller="Account" asp-action="UserInformation">
+											<i class="fa fa-user"></i> Thông Tin Cá Nhân
+										</a>
+									</li>
+
+									<li>
+										<a asp-area="" asp-controller="Account" asp-action="ChangePassword">
+											<i class="fa fa-key"></i> Đổi Mật Khẩu
+										</a>
+									</li>
+
+									@* TRANG CHỦ + ĐĂNG XUẤT *@
+									<li>
+										<a asp-area="" asp-controller="Home" asp-action="Index">
+											<i class="fa fa-home"></i> Trang Chủ
+										</a>
+									</li>
+
+									<li>
+										<a asp-area="" asp-controller="Account" asp-action="Logout">
+											<i class="fa fa-lock"></i> Xin Chào, @User.Identity.Name. Đăng Xuất
+										</a>
+									</li>
 								}
 								else
 								{
-									<li><a asp-area="" asp-controller="Account" asp-action="Login"><i class="fa fa-lock"></i> Đăng Nhập</a></li>
+									<li>
+										<a asp-area="" asp-controller="Account" asp-action="Login">
+											<i class="fa fa-lock"></i> Đăng Nhập
+										</a>
+									</li>
 								}
+
 							</ul>
 						</div>
 					</div>

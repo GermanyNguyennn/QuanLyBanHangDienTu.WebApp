@@ -13,6 +13,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             _dataContext = context;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(string Slug = "", string sort_by = "", string startprice = "", string endprice = "")
         {
             var brand = await _dataContext.Brands

@@ -43,7 +43,7 @@
                     <td>@item.Name</td>
                     <td><img src="@Url.Content($"~/media/products/{item.Image}")" style="max-width: 100px; max-height: 100px;" /></td>
                     <td>
-                        <a asp-controller="Product" asp-action="IndexDetail" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Xem</a>                       
+                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Xem</a>                       
                     </td>
                     <td>@item.Color</td>
                     <td>@item.Version</td>

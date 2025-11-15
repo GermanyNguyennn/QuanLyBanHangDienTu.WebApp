@@ -51,7 +51,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
             if (model.ImageUpload != null)
             {
-                model.Image = await SaveImageAsync(model.ImageUpload);
+                model.Image = await SaveImage(model.ImageUpload);
             }
 
             _dataContext.Sliders.Add(model);
@@ -85,8 +85,8 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
             if (model.ImageUpload != null)
             {
-                await DeleteImageAsync(existing.Image!);
-                existing.Image = await SaveImageAsync(model.ImageUpload);
+                await DeleteImage(existing.Image!);
+                existing.Image = await SaveImage(model.ImageUpload);
             }
 
             existing.Name = model.Name;
@@ -100,13 +100,13 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var slider = await _dataContext.Sliders.FindAsync(id);
             if (slider == null) return NotFound();
 
-            await DeleteImageAsync(slider.Image!);
+            await DeleteImage(slider.Image!);
 
             _dataContext.Sliders.Remove(slider);
             await _dataContext.SaveChangesAsync();
@@ -115,7 +115,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        private async Task<string> SaveImageAsync(IFormFile file)
+        private async Task<string> SaveImage(IFormFile file)
         {
             var folder = Path.Combine(_webHostEnvironment.WebRootPath, "media/sliders");
             var fileName = Guid.NewGuid() + "_" + Path.GetFileName(file.FileName);
@@ -129,7 +129,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return fileName;
         }
 
-        private async Task DeleteImageAsync(string imageName)
+        private async Task DeleteImage(string imageName)
         {
             if (string.IsNullOrEmpty(imageName) || imageName.Equals("null.jpg", StringComparison.OrdinalIgnoreCase))
                 return;

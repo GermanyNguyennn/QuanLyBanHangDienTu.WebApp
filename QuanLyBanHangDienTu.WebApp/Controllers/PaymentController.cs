@@ -21,7 +21,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> CreatePaymentUrlMoMo(MoMoInformationModel model)
         {
             var response = await _moMoService.CreatePaymentAsync(model);
@@ -48,7 +47,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> CreatePaymentUrlVNPay(VNPayInformationModel model)
         {
             var response = await _vnPayService.CreatePaymentAsync(model, HttpContext);

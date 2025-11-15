@@ -29,30 +29,13 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             _signInManager = signInManager;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            await Set2FAStatusAsync();
             return View();
         }
 
-        public async Task Set2FAStatusAsync()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                var is2FAEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
-                var isRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
-
-                ViewBag.Is2FACompleted = !is2FAEnabled || isRemembered;
-                ViewBag.IsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            }
-            else
-            {
-                ViewBag.Is2FACompleted = false;
-                ViewBag.IsAdmin = false;
-            }
-        }
-
+        [HttpGet]
         private async Task<UserModel?> GetUserFromContextAsync()
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -66,156 +49,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             }
 
             return null;
-        }
-
-        private async Task<string> EnsureAuthenticatorKeyAsync(UserModel user)
-        {
-            var key = await _userManager.GetAuthenticatorKeyAsync(user);
-            if (string.IsNullOrEmpty(key))
-            {
-                await _userManager.ResetAuthenticatorKeyAsync(user);
-                key = await _userManager.GetAuthenticatorKeyAsync(user);
-            }
-            return key!;
-        }
-
-        private string GenerateQrCodeUrl(string email, string key, string userName)
-        {
-            string issuer = $"{userName}";
-            return $"otpauth://totp/{Uri.EscapeDataString(issuer)}:{Uri.EscapeDataString(email)}" +
-                   $"?secret={key}&issuer={Uri.EscapeDataString(issuer)}";
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Enable2FA()
-        {
-            var user = await GetUserFromContextAsync();
-            if (user == null) return RedirectToAction("Login");
-
-            if (await _userManager.GetTwoFactorEnabledAsync(user))
-                return RedirectToAction("Index", "Home");
-
-            var key = await EnsureAuthenticatorKeyAsync(user);
-            ViewBag.QrCodeUrl = GenerateQrCodeUrl(user.Email!, key, user.UserName!);
-            ViewBag.Key = key;
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Enable2FA(string verificationCode)
-        {
-            var user = await GetUserFromContextAsync();
-            if (user == null) return RedirectToAction("Login");
-
-            var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultAuthenticatorProvider, verificationCode);
-            if (!isValid)
-            {
-                var key = await EnsureAuthenticatorKeyAsync(user);
-                ViewBag.QrCodeUrl = GenerateQrCodeUrl(user.Email!, key, user.UserName!);
-                ViewBag.Key = key;
-                TempData["error"] = "Invalid Verification Code.";
-                return View();
-            }
-
-            await _userManager.SetTwoFactorEnabledAsync(user, true);
-            await _signInManager.SignOutAsync();
-            HttpContext.Session.Clear();
-            TempData["success"] = "2-Step Verification Enabled.";
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Verify2FA()
-        {
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Verify2FA(string verificationCode)
-        {
-            if (string.IsNullOrWhiteSpace(verificationCode))
-            {
-                TempData["error"] = "Please enter verification code.";
-                return View();
-            }
-
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null) return RedirectToAction("Login");
-
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(verificationCode, false, false);
-
-            if (result.Succeeded)
-            {
-                HttpContext.Session.SetString("Is2FACompleted", "true");
-                HttpContext.Session.SetString("IsAdmin", (await _userManager.IsInRoleAsync(user, "Admin")) ? "true" : "false");
-                TempData["success"] = "Log in successfully.";
-                return RedirectToAction("Index", "Home");
-            }
-
-            if (result.IsLockedOut) return RedirectToAction("Lockout", "Account");
-
-            TempData["error"] = "Invalid Verification Code.";
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Reset2FA()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reset2FA(Reset2FAViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
-
-            var user = await _userManager.FindByEmailAsync(model.Email!);
-            if (user == null || !await _userManager.IsInRoleAsync(user, "Admin"))
-            {
-                TempData["error"] = "Email does not exist.";
-                return View();
-            }
-
-            var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "Reset2FA");
-            var resetLink = Url.Action("ConfirmReset2FA", "Account", new { userId = user.Id, token }, Request.Scheme);
-
-            await _emailSender.SendEmailAsync(model.Email!, "Reset 2FA", $"Ấn Vào <a href='{resetLink}'>Đây</a> Để Đặt Lại Xác Thực 2 Bước.");
-            TempData["success"] = "A 2FA reset link has been sent to your email.";
-            return RedirectToAction("Login", "Account");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ConfirmReset2FA(string userId, string token)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var isValid = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "Reset2FA", token);
-            if (!isValid)
-            {
-                TempData["error"] = "The link is invalid or expired.";
-                return RedirectToAction("Login", "Account");
-            }
-
-            var disableResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
-            if (!disableResult.Succeeded)
-            {
-                TempData["error"] = "Unable to reset 2FA.";
-                return RedirectToAction("Login", "Account");
-            }
-
-            TempData["success"] = "2FA reset successful. Please log in again to set up 2FA.";
-            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
@@ -240,21 +73,8 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(user, model.Password!, isPersistent: false, lockoutOnFailure: false);
 
-            if (result.RequiresTwoFactor)
-            {
-                TempData["UserId"] = user.Id;
-                return RedirectToAction("Verify2FA", new { returnUrl = model.ReturnURL });
-            }
-
             if (result.Succeeded)
-            {
-                if (await _userManager.IsInRoleAsync(user, "Admin") &&
-                    !await _userManager.GetTwoFactorEnabledAsync(user))
-                {
-                    TempData["UserId"] = user.Id;
-                    return RedirectToAction("Enable2FA", new { returnUrl = model.ReturnURL });
-                }
-
+            {            
                 TempData["success"] = "Log in successfully.";
 
                 if (!string.IsNullOrEmpty(model.ReturnURL) && Url.IsLocalUrl(model.ReturnURL))
@@ -319,7 +139,8 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             return View(registerViewModel);
         }
 
-        public async Task<IActionResult> History(int page = 1)
+        [HttpGet]
+        public async Task<IActionResult> HistoryOrder(int page = 1)
         {
             if (!User.Identity?.IsAuthenticated ?? true)
             {
@@ -376,21 +197,28 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             return View(orderDetails);
         }
 
+        [HttpGet]
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
 
         [HttpPost]
-        public async Task<IActionResult> SendMailForgotPassword(UserModel UserModel)
+        public async Task<IActionResult> ForgotPassword(UserModel model)
         {
             if (!ModelState.IsValid)
-                return View("ForgotPassword");
+                return View(model);
 
-            var user = await _userManager.FindByEmailAsync(UserModel.Email!);
+            var user = await _userManager.FindByEmailAsync(model.Email!);
             if (user == null)
             {
                 TempData["error"] = "Email does not exist.";
-                return RedirectToAction("ForgotPassword");
+                return View(model);
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
             var callbackUrl = Url.Action("NewPassword", "Account", new
             {
                 email = user.Email,
@@ -406,11 +234,6 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
 
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
         [HttpGet]
         public IActionResult NewPassword(string email, string token)
         {
@@ -422,10 +245,10 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateNewPassword(ResetPasswordViewModel model)
+        public async Task<IActionResult> NewPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
-                return View("NewPassword", model);
+                return View(model);
 
             var user = await _userManager.FindByEmailAsync(model.Email!);
             if (user == null)
@@ -434,7 +257,11 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                 return RedirectToAction("ForgotPassword");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(model.Token!), model.NewPassword!);
+            var result = await _userManager.ResetPasswordAsync(
+                user,
+                HttpUtility.UrlDecode(model.Token!),
+                model.NewPassword!
+            );
 
             if (result.Succeeded)
             {
@@ -445,11 +272,11 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             foreach (var error in result.Errors)
                 ModelState.AddModelError("", error.Description);
 
-            return View("NewPassword", model);
+            return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserInformation()
+        public async Task<IActionResult> UserOrder()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
@@ -479,7 +306,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserInformation(UserInformationViewModel model)
+        public async Task<IActionResult> UserOrder(UserInformationViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId)) return RedirectToAction("Login", "Account");

@@ -12,8 +12,8 @@ using QuanLyBanHangDienTu.WebApp.Repository;
 namespace QuanLyBanHangDienTu.WebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251006154101_06102025")]
-    partial class _06102025
+    [Migration("20251115153414_15112025")]
+    partial class _15112025
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

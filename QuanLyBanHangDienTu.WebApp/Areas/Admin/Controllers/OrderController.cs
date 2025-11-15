@@ -25,6 +25,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             _locationService = locationService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(int page = 1)
         {
             const int pageSize = 10;
@@ -70,7 +71,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateView(string orderCode, int status)
+        public async Task<IActionResult> UpdateViewOrder(string orderCode, int status)
         {
             if (string.IsNullOrWhiteSpace(orderCode))
                 return BadRequest(new { success = false, message = "Missing order code." });
@@ -119,7 +120,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserInformation(string orderCode)
+        public async Task<IActionResult> UserOrder(string orderCode)
         {
             if (string.IsNullOrEmpty(orderCode))
                 return NotFound("Missing order code.");

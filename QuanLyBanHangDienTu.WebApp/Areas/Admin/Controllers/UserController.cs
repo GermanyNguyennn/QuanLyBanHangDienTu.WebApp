@@ -11,7 +11,7 @@ using QuanLyBanHangDienTu.WebApp.Repository;
 namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin, Employee")]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly UserManager<UserModel> _userManager;
@@ -25,7 +25,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             _roleManager = roleManager;
         }
 
-        [HttpGet]
         [HttpGet]
         public async Task<IActionResult> Index(int page = 1)
         {
@@ -126,7 +125,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
 
-            // Cập nhật role
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
 
@@ -146,7 +144,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrEmpty(id)) return NotFound();

@@ -150,7 +150,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ToggleStatus(int id)
+        public async Task<IActionResult> Status(int id)
         {
             var coupon = await _dataContext.Coupons.FindAsync(id);
             if (coupon == null)

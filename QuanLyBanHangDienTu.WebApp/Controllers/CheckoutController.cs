@@ -40,8 +40,10 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             _locationService = locationService;
         }
 
+        [HttpGet]
         public IActionResult Index() => View();
 
+        [HttpPost]
         public async Task<IActionResult> Checkout(string PaymentMethod, string PaymentId)
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
@@ -143,13 +145,13 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             HttpContext.Session.Remove("DiscountAmount");
 
             // Gửi email xác nhận
-            await SendOrderEmails(userEmail, userName!, orderCode, emailItems, totalAmount, couponCode, discountAmount);
+            await SendEmailOrder(userEmail, userName!, orderCode, emailItems, totalAmount, couponCode, discountAmount);
 
             TempData["success"] = "Order successful!";
             return RedirectToAction("Index", "Home");
         }
 
-        private async Task SendOrderEmails(string userEmail, string userName, string orderCode, List<EmailOrderItemViewModel> items,
+        private async Task SendEmailOrder(string userEmail, string userName, string orderCode, List<EmailOrderItemViewModel> items,
             decimal totalAmount, string? couponCode, decimal discountAmount)
         {
             var viewModel = new EmailOrderViewModel
