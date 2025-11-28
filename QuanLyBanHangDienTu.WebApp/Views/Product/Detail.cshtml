@@ -1,11 +1,11 @@
 ﻿
-@* <style> *@
-@* 	.table.table-bordered, *@
-@* 	.table.table-bordered th, *@
-@* 	.table.table-bordered td { *@
-@* 		border: none !important; *@
-@* 	} *@
-@* </style> *@
+<style>
+	.table.table-bordered,
+ 	.table.table-bordered th,
+ 	.table.table-bordered td {
+ 		border: none !important;
+ 	}
+</style>
 
 <div class="col-sm-12 padding-right">
 	<div class="product-details">
@@ -63,19 +63,25 @@
 						<th>Thương Hiệu:</th>
 						<td>@Model.Brand.Name</td>
 					</tr>
+					<tr>
+						<td></td>
+						<td>
+							@if (Model.Product.Quantity > 0)
+							{
+								<a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-Id="@Model.Product.Id">
+									<i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+								</a>
+							}
+							else
+							{
+								<a class="btn btn-default add-to-cart">
+									<i class="fa fa-shopping-cart"></i> Hết Hàng
+								</a>
+							}
+						</td>
+					</tr>
 				</table>
-				@if (Model.Product.Quantity > 0)
-				{
-					<a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-Id="@Model.Product.Id">
-						<i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
-					</a>
-				}
-				else
-				{
-					<a class="btn btn-default add-to-cart">
-						<i class="fa fa-shopping-cart"></i> Hết Hàng
-					</a>
-				}
+				
 			</div>
 		</div>
 	</div>

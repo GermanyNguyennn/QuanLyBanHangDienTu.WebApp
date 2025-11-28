@@ -21,8 +21,9 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var contacts = await _dataContext.Contacts.ToListAsync();
-            return View(contacts);
+            var contact = await _dataContext.Contacts.FirstOrDefaultAsync();
+            ViewData["Contact"] = contact;
+            return View(contact);
         }
 
         [HttpGet]
