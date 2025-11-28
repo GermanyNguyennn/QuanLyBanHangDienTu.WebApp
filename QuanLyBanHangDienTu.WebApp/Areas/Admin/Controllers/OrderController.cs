@@ -129,7 +129,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             if (order == null)
                 return NotFound("Order not found.");
 
-            var viewModel = new UserInformationViewModel
+            var viewModel = new UserViewModel
             {
                 FullName = order.FullName,
                 Email = order.Email!,

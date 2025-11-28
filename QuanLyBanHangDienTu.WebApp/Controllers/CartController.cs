@@ -40,7 +40,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                 FullName = user?.FullName ?? "",
                 Email = user?.Email ?? "",
                 PhoneNumber = user?.PhoneNumber ?? "",
-                userInformation = new UserInformationViewModel
+                userInformation = new UserViewModel
                 {
                     Address = user?.Address ?? "",
                     City = user != null ? await _locationService.GetCityNameById(user.City!) : "",

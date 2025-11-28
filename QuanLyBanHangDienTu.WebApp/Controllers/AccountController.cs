@@ -290,7 +290,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                 return NotFound("No personal information found.");
             }
 
-            var model = new UserInformationViewModel
+            var model = new UserViewModel
             {
                 UserName = user.UserName,
                 FullName = user.FullName,
@@ -306,7 +306,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserOrder(UserInformationViewModel model)
+        public async Task<IActionResult> UserOrder(UserViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId)) return RedirectToAction("Login", "Account");
