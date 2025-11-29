@@ -39,18 +39,13 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return View(categories);
         }
 
+        [HttpGet]
         public IActionResult Add() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CategoryModel categoryModel)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(categoryModel);
-            }
-
             categoryModel.Slug = GenerateSlug(categoryModel.Name!);
 
             bool slugExists = await _dataContext.Categories
@@ -86,11 +81,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CategoryModel categoryModel)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(categoryModel);
-            }
 
             categoryModel.Slug = GenerateSlug(categoryModel.Name!);
 

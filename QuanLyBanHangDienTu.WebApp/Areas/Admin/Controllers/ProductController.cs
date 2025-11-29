@@ -55,12 +55,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         {
             SetSelectLists(productModel.CategoryId, productModel.BrandId);
 
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(productModel);
-            }
-
             productModel.Slug = GenerateSlug(productModel.Name!);
 
             if (await _dataContext.Products.AnyAsync(p => p.Slug == productModel.Slug))
@@ -98,12 +92,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
             var existingProduct = await _dataContext.Products.FindAsync(id);
             if (existingProduct == null) return NotFound();
-
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(productModel);
-            }
 
             existingProduct.Slug = productModel.Name!.Trim().Replace(" ", "-");
 

@@ -83,7 +83,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "iPhone 15 Pro Max 256GB",
-                            Image = "~/media/products/iphone-16.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "iPhone 15 Pro Max với chip A17 Pro mạnh mẽ, camera 48MP và thiết kế titan sang trọng.",
                             Color = "Titan Xanh",
                             Version = "256GB",
@@ -99,7 +99,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "iPhone 14 Pro 128GB",
-                            Image = "~/media/products/iphone-16e.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "iPhone 14 Pro với chip A16 Bionic, Dynamic Island, và camera chuyên nghiệp.",
                             Color = "Tím",
                             Version = "128GB",
@@ -115,7 +115,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "iPhone 13 128GB",
-                            Image = "~/media/products/iphone-16-plus.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "iPhone 13 với chip A15 Bionic, hiệu năng mạnh mẽ và thời lượng pin dài.",
                             Color = "Đỏ",
                             Version = "128GB",
@@ -131,7 +131,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "MacBook Air M2 13 inch 2024",
-                            Image = "~/media/products/macbook-air.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "MacBook Air M2 mỏng nhẹ, hiệu năng vượt trội, pin lên tới 18 giờ.",
                             Color = "Bạc",
                             Version = "8GB/256GB",
@@ -147,7 +147,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "MacBook Pro 14 inch M3 2024",
-                            Image = "~/media/products/macbook-pro.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "MacBook Pro M3 cho hiệu năng đột phá, màn mini-LED tuyệt đẹp và pin 20 giờ.",
                             Color = "Xám không gian",
                             Version = "16GB/512GB",
@@ -163,7 +163,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "Surface Laptop 5 13.5 inch",
-                            Image = "~/media/products/surface-laptop5.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "Surface Laptop 5 mang đến sự kết hợp hoàn hảo giữa hiệu năng và phong cách.",
                             Color = "Bạch Kim",
                             Version = "Core i5 / 8GB / 512GB",
@@ -179,7 +179,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "Surface Pro 9 13 inch",
-                            Image = "~/media/products/surface-pro9.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "Surface Pro 9 mang đến trải nghiệm linh hoạt giữa laptop và tablet, hiệu năng cao.",
                             Color = "Xanh Dương",
                             Version = "Core i7 / 16GB / 512GB",
@@ -195,7 +195,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "iPhone SE 2022 64GB",
-                            Image = "~/media/products/iphonese2022.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "iPhone SE 2022 nhỏ gọn, chip A15 Bionic và cảm biến vân tay Touch ID truyền thống.",
                             Color = "Trắng",
                             Version = "64GB",
@@ -211,7 +211,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "MacBook Air M1 2020",
-                            Image = "~/media/products/macbook-air-m1.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "MacBook Air M1 mang đến hiệu năng tuyệt vời, hoạt động êm ái không quạt, giá hợp lý.",
                             Color = "Vàng",
                             Version = "8GB/256GB",
@@ -227,7 +227,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                         new ProductModel
                         {
                             Name = "Surface Laptop Go 2",
-                            Image = "~/media/products/surface-laptop-go2.jpg",
+                            Image = "iphone-16.jpg",
                             Description = "Surface Laptop Go 2 nhỏ gọn, pin lâu, màn hình cảm ứng 12.4 inch.",
                             Color = "Xanh nhạt",
                             Version = "Core i5 / 8GB / 256GB",
@@ -257,7 +257,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                     Phone = "0964429403",
                     Address = "Hà Nội",
                     Description = "",
-                    LogoImage = "~/media/logo/5c12ee81-ed3b-4d66-a529-5f93af1726ff_Admin.jpg"
+                    LogoImage = "5c12ee81-ed3b-4d66-a529-5f93af1726ff_Admin.jpg"
                 };
 
                 context.Contacts.Add(contactModel);

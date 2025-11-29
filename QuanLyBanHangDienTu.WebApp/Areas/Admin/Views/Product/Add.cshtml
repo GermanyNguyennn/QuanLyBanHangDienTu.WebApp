@@ -54,7 +54,7 @@
             <th style="vertical-align: middle;"><label>Giá Bán</label></th>
             <td>
                 <input asp-for="Price" pattern="[0-9.,]+" class="form-control typing-price" />
-                <div id="price-convert"></div>
+                <div class="form-control" id="price-convert"></div>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </td>
         </tr>
@@ -63,7 +63,7 @@
             <th style="vertical-align: middle;"><label>Giá Nhập</label></th>
             <td>
                 <input asp-for="ImportPrice" pattern="[0-9.,]+" class="form-control typing-importprice" />
-                <div id="importprice-convert"></div>
+                <div class ="form-control" id="importprice-convert"></div>
                 <span asp-validation-for="ImportPrice" class="text-danger"></span>
             </td>
         </tr>
@@ -110,17 +110,17 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-        <script>
-            CKEDITOR.replace('Description');
-        </script>
-        <script>
-            $("#ImageUpload").change(function(){
-                readURL(this);
-            });
-        </script>
-        <script>
-                    $(".typing-price").on("keyup", function () {
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+    <script>
+        $("#ImageUpload").change(function(){
+            readURL(this);
+        });
+    </script>
+    <script>
+        $(".typing-price").on("keyup", function () {
             var currency_input = parseFloat($(this).val().replace(/[^\d]/g, ''));
             if (!isNaN(currency_input)) {
                 $("#price-convert").html(
@@ -142,5 +142,5 @@
             }
         });
 
-        </script>
+    </script>
 }

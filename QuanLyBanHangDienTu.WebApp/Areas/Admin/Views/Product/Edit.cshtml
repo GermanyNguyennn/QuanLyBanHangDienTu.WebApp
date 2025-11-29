@@ -55,7 +55,7 @@
             <th style="vertical-align: middle;"><label>Giá Bán</label></th>
             <td>
                 <input asp-for="Price" pattern="[0-9.,]+" class="form-control typing-price" />
-                <div id="price-convert"></div>
+                <div class="form-control" id="price-convert"></div>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </td>
         </tr>
@@ -64,7 +64,7 @@
             <th style="vertical-align: middle;"><label>Giá Nhập</label></th>
             <td>
                 <input asp-for="ImportPrice" pattern="[0-9.,]+" class="form-control typing-importprice" />
-                <div id="importprice-convert"></div>
+                <div class="form-control" id="importprice-convert"></div>
                 <span asp-validation-for="ImportPrice" class="text-danger"></span>
             </td>
         </tr>

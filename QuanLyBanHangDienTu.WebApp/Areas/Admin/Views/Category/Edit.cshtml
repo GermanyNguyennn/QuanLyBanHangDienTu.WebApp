@@ -6,6 +6,10 @@
 
 <div class="">
 <form asp-action="Edit" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <input asp-for="Id" type="hidden" />
+
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="form-group">

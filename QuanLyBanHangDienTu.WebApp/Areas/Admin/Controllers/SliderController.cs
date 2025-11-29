@@ -43,12 +43,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(SliderModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(model);
-            }
-
             if (model.ImageUpload != null)
             {
                 model.Image = await SaveImage(model.ImageUpload);
@@ -76,12 +70,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         {
             var existing = await _dataContext.Sliders.FindAsync(model.Id);
             if (existing == null) return NotFound();
-
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(model);
-            }
 
             if (model.ImageUpload != null)
             {

@@ -38,17 +38,13 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return View(brands);
         }
 
+        [HttpGet]
         public IActionResult Add() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(BrandModel brandModel)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(brandModel);
-            }
 
             brandModel.Slug = GenerateSlug(brandModel.Name!);
 
@@ -85,11 +81,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(BrandModel brandModel)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(brandModel);
-            }
 
             brandModel.Slug = GenerateSlug(brandModel.Name!);
 

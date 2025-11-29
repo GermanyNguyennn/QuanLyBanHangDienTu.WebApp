@@ -80,8 +80,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Add(int id)
         {
             var userId = _userManager.GetUserId(User);
@@ -148,7 +147,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = _userManager.GetUserId(User);

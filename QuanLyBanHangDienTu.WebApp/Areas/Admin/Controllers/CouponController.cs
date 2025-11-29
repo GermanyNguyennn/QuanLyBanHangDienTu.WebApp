@@ -42,11 +42,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CouponModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(model);
-            }
 
             if (model.StartDate >= model.EndDate)
             {
@@ -87,11 +82,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CouponModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(model);
-            }
 
             if (model.StartDate >= model.EndDate)
             {

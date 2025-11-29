@@ -21,7 +21,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var contact = await _dataContext.Contacts.FirstOrDefaultAsync();
+            var contact = await _dataContext.Contacts.ToListAsync();
             ViewData["Contact"] = contact;
             return View(contact);
         }
@@ -42,11 +42,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ContactModel contactModel)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(contactModel);
-            }
 
             if (contactModel.ImageUpload != null)
                 contactModel.LogoImage = await SaveImageAsync(contactModel.ImageUpload);
@@ -82,12 +77,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             {
                 TempData["error"] = "No contact information found.";
                 return RedirectToAction("Index");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(contactModel);
             }
 
             if (contactModel.ImageUpload != null)

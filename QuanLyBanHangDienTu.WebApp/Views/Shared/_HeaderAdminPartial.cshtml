@@ -37,9 +37,9 @@
 								</li>
 							}
 
-							@* MENU NGƯỜI DÙNG CHUNG *@
+							@* MENU NGƯỜI DÙNG *@
 							<li>
-								<a asp-area="" asp-controller="Account" asp-action="HistoryOrder">
+								<a asp-area="" asp-controller="Account" asp-action="UserOrder">
 									<i class="fa fa-history"></i> Lịch Sử
 								</a>
 							</li>
@@ -105,20 +105,31 @@
 				</div>
 				<div class="mainmenu pull-left">
 					<ul class="nav navbar-nav collapse navbar-collapse">
-						<li><a asp-controller="Home" asp-action="Index" class="active">Trang Chủ</a></li>
-						<li><a asp-controller="Cart" asp-action="Index">Giỏ Hàng</a></li>
-						@* <li><a asp-controller="Home" asp-action="Contact">Liên Hệ</a></li> *@
+						<li><a asp-area="Admin" asp-controller="Product" asp-action="Index" class="active">Trang Chủ</a></li>
+						<li class="dropdown">
+							<a>Sản Phẩm<i class="fa fa-angle-down"></i></a>
+							<ul role="menu" class="sub-menu">
+								<li><a asp-area="Admin" asp-controller="Category" asp-action="Index">Danh Mục</a></li>
+								<li><a asp-area="Admin" asp-controller="Brand" asp-action="Index">Thương Hiệu</a></li>
+								<li><a asp-area="Admin" asp-controller="Product" asp-action="Index">Sản Phẩm</a></li>
+								<li><a asp-area="Admin" asp-controller="Order" asp-action="Index">Đơn Hàng</a></li>
+								<li><a asp-area="Admin" asp-controller="User" asp-action="Index">Tài Khoản</a></li>
+								<li><a asp-area="Admin" asp-controller="Role" asp-action="Index">Vai Trò</a></li>
+								<li><a asp-area="Admin" asp-controller="Slider" asp-action="Index">Slider</a></li>
+								<li><a asp-area="Admin" asp-controller="Coupon" asp-action="Index">Mã Giảm Giá</a></li>
+								<li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Thống Kê</a></li>
+							</ul>
+						</li>
+						<li><a asp-area="Admin" asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
 					</ul>
 				</div>
 			</div>
-			<div class="col-sm-3">
-				<form asp-action="Search" asp-controller="Product" method="POST">
-					<div class="search_box pull-right">
-						<input type="text" placeholder="Search" name="searchTerm" />
-						<button class="btn btn-warning" type="submit">Tìm Kiếm</button>
-					</div>
-				</form>
-			</div>
+			<form asp-area="Admin" asp-controller="Product" asp-action="Search" method="POST">
+				<div class="search_box pull-right">
+					<input type="text" placeholder="Search" name="searchTerm" />
+					<button class="btn btn-warning" type="submit">Tìm Kiếm</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

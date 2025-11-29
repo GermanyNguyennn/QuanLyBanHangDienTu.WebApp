@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+	var contactList = ViewData["Contact"] as List<ContactModel>;
+	var contact = contactList?.FirstOrDefault() ?? new ContactModel();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -40,7 +44,7 @@
 	</section>
 
 	<footer id="footer">
-		<partial name="_FooterPartial" />
+		<partial name="_FooterPartial" model="contact" />
 	</footer>
 
 	<script src="~/js/jquery.js"></script>

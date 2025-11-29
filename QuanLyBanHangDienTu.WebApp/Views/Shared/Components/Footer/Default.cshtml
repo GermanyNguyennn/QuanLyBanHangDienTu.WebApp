@@ -1,0 +1,41 @@
+﻿@model ContactModel
+
+<div class="footer-top">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="companyinfo">
+					<img src="@Url.Content($"~/media/logo/{Model.LogoImage}")" style="max-width: 100px; max-height: 100px;" />
+				</div>
+			</div>
+			<div class="col-sm-7">
+				<div class="col-sm-3">
+				</div>
+
+				<div class="col-sm-3">
+				</div>
+
+				<div class="col-sm-3">
+				</div>
+
+				<div class="col-sm-3">
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="address">
+					<img src="~/images/home/map.png" alt="" />
+					<p>@Model.Address</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer-bottom">
+		<div class="container">
+			<div class="row">
+				<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All Rights Reserved.</p>
+				<p class="pull-right">Designed By <span><a target="_blank" href="https://www.facebook.com/nguyen.manh.duc.2003">Nguyễn Mạnh Đức</a></span></p>
+			</div>
+		</div>
+	</div>
+</div>

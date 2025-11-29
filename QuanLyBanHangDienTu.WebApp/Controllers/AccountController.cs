@@ -325,7 +325,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             await _userManager.UpdateAsync(user);
 
             TempData["success"] = "Personal information has been updated successfully.";
-            return RedirectToAction("UserInformation");
+            return RedirectToAction("UserOrder");
         }
 
         [HttpGet]

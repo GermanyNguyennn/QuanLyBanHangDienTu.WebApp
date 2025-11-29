@@ -89,12 +89,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, IdentityRole model)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["error"] = "Invalid data.";
-                return View(model);
-            }
-
             var role = await _roleManager.FindByIdAsync(id);
             if (role == null) return NotFound();
 
