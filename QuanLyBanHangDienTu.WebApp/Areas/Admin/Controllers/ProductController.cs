@@ -126,7 +126,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _dataContext.Products.FindAsync(id);
@@ -222,13 +222,24 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
                 return View("ViewDetailLaptop", detail);
             }
+            else if (product.CategoryId == 3) // Tablet
+            {
+                var detail = await _dataContext.ProductDetailTablets
+                    .FirstOrDefaultAsync(x => x.ProductId == id) ?? new ProductDetailTabletModel
+                    {
+                        ProductId = product.Id,
+                        CategoryId = product.CategoryId,
+                        BrandId = product.BrandId,
+                    };
+
+                return View("ViewDetailTablet", detail);
+            }
 
             return NotFound("Category does not support displaying details.");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDetail(IFormCollection form)
+        public async Task<IActionResult> Detail(IFormCollection form)
         {
             int categoryId = int.Parse(form["CategoryId"]!);
 
@@ -261,6 +272,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
                 detail.DisplayResolution = form["DisplayResolution"]!;
                 detail.DisplayFeatures = form["DisplayFeatures"]!;
                 detail.CPUType = form["CPUType"]!;
+                detail.Compatibility = form["Compatibility"]!;
 
                 await _dataContext.SaveChangesAsync();
                 TempData["success"] = "Phone details saved successfully!";
@@ -294,6 +306,36 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
                 await _dataContext.SaveChangesAsync();
                 TempData["success"] = "Laptop details saved successfully!";
+            }
+            else if (categoryId == 3)
+            {
+                var detail = await _dataContext.ProductDetailTablets
+                    .FirstOrDefaultAsync(x => x.ProductId == productId);
+
+                if (detail == null)
+                {
+                    detail = new ProductDetailTabletModel();
+                    _dataContext.ProductDetailTablets.Add(detail);
+                }
+
+                detail.ProductId = productId;
+                detail.CategoryId = categoryId;
+                detail.BrandId = int.Parse(form["BrandId"]!);
+                detail.ScreenSize = form["ScreenSize"]!;
+                detail.DisplayTechnology = form["DisplayTechnology"]!;
+                detail.RearCamera = form["RearCamera"]!;
+                detail.FrontCamera = form["FrontCamera"]!;
+                detail.ChipSet = form["ChipSet"]!;
+                detail.RAMCapacity = form["RAMCapacity"]!;
+                detail.InternalStorage = form["InternalStorage"]!;
+                detail.OperatingSystem = form["OperatingSystem"]!;
+                detail.DisplayResolution = form["DisplayResolution"]!;
+                detail.DisplayFeatures = form["DisplayFeatures"]!;
+                detail.CPUType = form["CPUType"]!;
+                detail.Compatibility = form["Compatibility"]!;
+
+                await _dataContext.SaveChangesAsync();
+                TempData["success"] = "Phone details saved successfully!";
             }
             else
             {

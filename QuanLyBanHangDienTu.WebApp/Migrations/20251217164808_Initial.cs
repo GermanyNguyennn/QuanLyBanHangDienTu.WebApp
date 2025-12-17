@@ -466,6 +466,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     DisplayResolution = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayFeatures = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CPUType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Compatibility = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -485,6 +486,52 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductDetailPhones_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductDetailTablets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
+                    ScreenSize = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DisplayTechnology = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RearCamera = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChipSet = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RAMCapacity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InternalStorage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OperatingSystem = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DisplayResolution = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DisplayFeatures = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CPUType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Compatibility = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductDetailTablets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductDetailTablets_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductDetailTablets_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductDetailTablets_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -619,6 +666,22 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductDetailTablets_BrandId",
+                table: "ProductDetailTablets",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductDetailTablets_CategoryId",
+                table: "ProductDetailTablets",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductDetailTablets_ProductId",
+                table: "ProductDetailTablets",
+                column: "ProductId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandId",
                 table: "Products",
                 column: "BrandId");
@@ -674,6 +737,9 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductDetailPhones");
+
+            migrationBuilder.DropTable(
+                name: "ProductDetailTablets");
 
             migrationBuilder.DropTable(
                 name: "Sliders");

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLyBanHangDienTu.WebApp.Models
 {
-    public class ProductDetailPhoneModel
+    public class ProductDetailTabletModel
     {
         [Key]
         public int Id { get; set; }
@@ -21,10 +21,8 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public string? RearCamera { get; set; } // Camera sau
         public string? FrontCamera { get; set; } // Camera trước
         public string? ChipSet { get; set; } // Chipset
-        public bool NFC { get; set; } // NFC
         public string? RAMCapacity { get; set; } // Phiên Bản RAM
         public string? InternalStorage { get; set; } // Bộ nhớ trong
-        public string? SimCard { get; set; } // Thẻ sim
         public string? OperatingSystem { get; set; } // Hệ điều hành
         public string? DisplayResolution { get; set; } // Độ phân giải màn hình
         public string? DisplayFeatures { get; set; } // Tính năng màn hình

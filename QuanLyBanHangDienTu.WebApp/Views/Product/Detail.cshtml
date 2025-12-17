@@ -1,11 +1,10 @@
-﻿
-<style>
+﻿@* <style>
 	.table.table-bordered,
  	.table.table-bordered th,
  	.table.table-bordered td {
  		border: none !important;
  	}
-</style>
+</style> *@
 
 <div class="col-sm-12 padding-right">
 	<div class="product-details">
@@ -16,7 +15,7 @@
 			<div id="similar-product" class="carousel slide" data-ride="carousel">	
 
 				<div class="carousel-inner">
-					<div class="item active">
+					<div class="item active">	
 						
 					</div>
 				</div>
@@ -32,56 +31,34 @@
 		<div class="col-sm-8">
 			<div class="product-information">	
 				<span>
-					<span>
-						@Model.Product.Name
-					</span>
+					<span>@Model.Product.Name</span>
 				</span>
 				<table class="table table-bordered">
 					<tr>
-						<th style="vertical-align: middle;">Giá:</th>
-							<td>
-								<span>
-									<span>
-										@Model.Product.Price.ToString("#,##0 VNĐ")
-									</span>
-								</span>
-							</td>
-						</tr>
+						<th>Giá:</th>
+						<td>@Model.Product.Price.ToString("#,##0 VNĐ")</td>
+					</tr>
 					<tr>
-						<th>Màu Sắc:</th>
+						<th style="vertical-align: middle;">Màu Sắc:</th>
 						<td>@Model.Product.Color</td>
 					</tr>
 					<tr>
-						<th>Phiên Bản:</th>
+						<th style="vertical-align: middle;">Phiên Bản:</th>
 						<td>@Model.Product.Version</td>
-					</tr>
-					<tr>
-						<th>Danh Mục:</th>
-						<td>@Model.Category.Name</td>
-					</tr>
-					<tr>
-						<th>Thương Hiệu:</th>
-						<td>@Model.Brand.Name</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>
-							@if (Model.Product.Quantity > 0)
-							{
-								<a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-Id="@Model.Product.Id">
-									<i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
-								</a>
-							}
-							else
-							{
-								<a class="btn btn-default add-to-cart">
-									<i class="fa fa-shopping-cart"></i> Hết Hàng
-								</a>
-							}
-						</td>
-					</tr>
+					</tr>						
 				</table>
-				
+				@if (Model.Product.Quantity > 0)
+				{
+					<a class="btn btn-default add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-Id="@Model.Product.Id">
+						<i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+					</a>
+				}
+				else
+				{
+					<a class="btn btn-default add-to-cart">
+						<i class="fa fa-shopping-cart"></i> Hết Hàng
+					</a>
+				}
 			</div>
 		</div>
 	</div>
@@ -90,8 +67,8 @@
 		<div class="col-sm-12">
 			<ul class="nav nav-tabs">
 				<li><a href="#details" data-toggle="tab">Chi Tiết</a></li>
-				<li><a href="#specs" data-toggle="tab">Thông Số Kỹ Thuật</a></li>
-				<li class="active"><a href="#reviews" data-toggle="tab">Đánh Giá</a></li>
+				<li class="active"><a href="#specs" data-toggle="tab">Thông Số Kỹ Thuật</a></li>
+				<li><a href="#reviews" data-toggle="tab">Đánh Giá</a></li>
 			</ul>
 		</div>
 		<div class="tab-content">
@@ -99,7 +76,7 @@
 				@Html.Raw(@Model.Product.Description)
 			</div>
 
-			<div class="tab-pane fade" id="specs">
+			<div class="tab-pane fade active in" id="specs">
 				<table class="table table-bordered">
 					@if (Model.Product.CategoryId == 1 && Model.PhoneDetail != null)
 					{
@@ -116,6 +93,7 @@
 						<tr><th>Độ phân giải</th><td>@Model.PhoneDetail.DisplayResolution</td></tr>
 						<tr><th>Tính năng màn hình</th><td>@Model.PhoneDetail.DisplayFeatures</td></tr>
 						<tr><th>CPU</th><td>@Model.PhoneDetail.CPUType</td></tr>
+						<tr><th>Khả năng tương thích</th><td>@Model.PhoneDetail.Compatibility</td></tr>
 					}
 					else if (Model.Product.CategoryId == 2 && Model.LaptopDetail != null)
 					{
@@ -131,10 +109,25 @@
 						<tr><th>CPU</th><td>@Model.LaptopDetail.CPUType</td></tr>
 						<tr><th>Cổng giao tiếp</th><td>@Model.LaptopDetail.Interface</td></tr>
 					}
+					else if (Model.Product.CategoryId == 3 && Model.TabletDetail != null)
+					{
+						<tr><th>Màn hình</th><td>@Model.TabletDetail.ScreenSize</td></tr>
+						<tr><th>Công nghệ hiển thị</th><td>@Model.TabletDetail.DisplayTechnology</td></tr>
+						<tr><th>Camera sau</th><td>@Model.TabletDetail.RearCamera</td></tr>
+						<tr><th>Camera trước</th><td>@Model.TabletDetail.FrontCamera</td></tr>
+						<tr><th>Chipset</th><td>@Model.TabletDetail.ChipSet</td></tr>
+						<tr><th>RAM</th><td>@Model.TabletDetail.RAMCapacity</td></tr>
+						<tr><th>Bộ nhớ trong</th><td>@Model.TabletDetail.InternalStorage</td></tr>
+						<tr><th>Hệ điều hành</th><td>@Model.TabletDetail.OperatingSystem</td></tr>
+						<tr><th>Độ phân giải</th><td>@Model.TabletDetail.DisplayResolution</td></tr>
+						<tr><th>Tính năng màn hình</th><td>@Model.TabletDetail.DisplayFeatures</td></tr>
+						<tr><th>CPU</th><td>@Model.TabletDetail.CPUType</td></tr>
+						<tr><th>Khả năng tương thích</th><td>@Model.TabletDetail.Compatibility</td></tr>
+					}
 				</table>
 			</div>
 
-			<div class="tab-pane fade active in" id="reviews">
+			<div class="tab-pane fade" id="reviews">
 				<div class="col-sm-12">
 					<p>Viết Đánh Giá Của Bạn Về Sản Phẩm <b>@Model.Product.Name</b></p>
 					<form action="#">

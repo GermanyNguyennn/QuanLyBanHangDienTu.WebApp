@@ -12,7 +12,7 @@ using QuanLyBanHangDienTu.WebApp.Repository;
 namespace QuanLyBanHangDienTu.WebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251129090610_Initial")]
+    [Migration("20251217164808_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -573,6 +573,9 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Property<string>("ChipSet")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Compatibility")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -622,6 +625,74 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductDetailPhones");
+                });
+
+            modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.ProductDetailTabletModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CPUType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ChipSet")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Compatibility")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DisplayFeatures")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayResolution")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayTechnology")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FrontCamera")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InternalStorage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OperatingSystem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RAMCapacity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RearCamera")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ScreenSize")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductDetailTablets");
                 });
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.ProductModel", b =>
@@ -987,6 +1058,33 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.ProductDetailTabletModel", b =>
+                {
+                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.BrandModel", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.CategoryModel", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuanLyBanHangDienTu.WebApp.Models.ProductModel", "Product")
+                        .WithOne("ProductDetailTablets")
+                        .HasForeignKey("QuanLyBanHangDienTu.WebApp.Models.ProductDetailTabletModel", "ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.ProductModel", b =>
                 {
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.BrandModel", "Brand")
@@ -1036,6 +1134,8 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Navigation("ProductDetailLaptops");
 
                     b.Navigation("ProductDetailPhones");
+
+                    b.Navigation("ProductDetailTablets");
                 });
 #pragma warning restore 612, 618
         }

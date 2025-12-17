@@ -8,7 +8,7 @@
 
 <div class="col-sm-9">
 	<div class="features_items">
-		<h2 class="title text-center">Sản Phẩm</h2>
+		<h2 class="title text-center">Sản Phẩm</h2>	
 		@if (Model != null)
 		{
 			@foreach (var item in Model)
@@ -19,7 +19,7 @@
 							<div class="productinfo text-center">
 								<a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id">
 									<img src="@Url.Content($"~/media/products/{item.Image}")" alt="@item.Name" />
-									<p><h2>@item.Price.ToString("#,##0 VNĐ")</h2></p>
+									<h2>@item.Price.ToString("#,##0 VNĐ")</h2>
 									<p>@item.Name</p>
 
 								</a>
@@ -35,7 +35,7 @@
 							<div class="product-overlay">
 								<div class="overlay-content">
 									<a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id">
-										<p><h2>@item.Price.ToString("#,##0 VNĐ")</h2></p>
+										<h2>@item.Price.ToString("#,##0 VNĐ")</h2>
 										<p>@item.Name</p>
 									</a>
 									@if (@item.Quantity > 0)

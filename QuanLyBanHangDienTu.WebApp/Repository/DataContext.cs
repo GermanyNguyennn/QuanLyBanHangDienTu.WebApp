@@ -14,7 +14,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
         {
             base.OnModelCreating(modelBuilder);
 
-            // Cấu hình quan hệ 1-1 giữa Product và ProductDetailPhone, ProductDetailLaptop
+            // Cấu hình quan hệ 1-1 giữa Product và ProductDetailPhone, ProductDetailLaptop, ProductDetailTablet
             modelBuilder.Entity<ProductModel>()
                 .HasOne(p => p.ProductDetailLaptops)
                 .WithOne(d => d.Product)
@@ -26,7 +26,13 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                 .WithOne(d => d.Product)
                 .HasForeignKey<ProductDetailPhoneModel>(d => d.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
-       
+
+            modelBuilder.Entity<ProductModel>()
+                .HasOne(p => p.ProductDetailTablets)
+                .WithOne(d => d.Product)
+                .HasForeignKey<ProductDetailTabletModel>(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Quan hệ 1-n giữa Product và OrderDetail
             modelBuilder.Entity<ProductModel>()
                 .HasMany(p => p.OrderDetails)
@@ -61,6 +67,7 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
         public DbSet<VNPayModel> VNPays { get; set; }
         public DbSet<ProductDetailPhoneModel> ProductDetailPhones { get; set; }
         public DbSet<ProductDetailLaptopModel> ProductDetailLaptops { get; set; }
+        public DbSet<ProductDetailTabletModel> ProductDetailTablets { get; set; }
         public DbSet<CartModel> Carts { get; set; }
     }
 }

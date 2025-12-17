@@ -33,6 +33,7 @@ namespace QuanLyBanHangDienTu.WebApp.Models
 
         public ProductDetailPhoneModel? ProductDetailPhones { get; set; }
         public ProductDetailLaptopModel? ProductDetailLaptops { get; set; }
+        public ProductDetailTabletModel? ProductDetailTablets { get; set; }
         public ICollection<OrderDetailModel> OrderDetails { get; set; } = new List<OrderDetailModel>();
 
     }

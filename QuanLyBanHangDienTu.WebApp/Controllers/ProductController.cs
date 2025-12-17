@@ -49,6 +49,9 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                 LaptopDetail = product.CategoryId == 2
                     ? await _dataContext.ProductDetailLaptops.FirstOrDefaultAsync(x => x.ProductId == id)
                     : null,
+                TabletDetail = product.CategoryId == 3
+                    ? await _dataContext.ProductDetailTablets.FirstOrDefaultAsync(x => x.ProductId == id)
+                    : null,
             };
 
             return View(viewModel);

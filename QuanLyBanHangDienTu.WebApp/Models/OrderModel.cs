@@ -25,6 +25,7 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public string? PaymentMethod { get; set; }
         public ICollection<OrderDetailModel> OrderDetail { get; set; } = new List<OrderDetailModel>();
 
+        // Thông tin người nhận hàng được lưu tại thời điểm đặt hàng
         public string FullName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
