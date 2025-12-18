@@ -134,7 +134,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             }
 
             _dataContext.OrderDetails.AddRange(orderDetails);
-            await _dataContext.SaveChangesAsync(); // Lưu OrderDetail + Product update
+            await _dataContext.SaveChangesAsync();
 
             // Xoá giỏ hàng
             _dataContext.Carts.RemoveRange(cart);
@@ -164,14 +164,24 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                 DiscountAmount = discountAmount
             };
 
+            // Email cho khách hàng
             var customerHtml = await _emailRenderer.RenderAsync("CustomerEmail.cshtml", viewModel);
             await _emailSender.SendEmailAsync(userEmail, "Xác Nhận Đơn Hàng", customerHtml);
 
+            // Email cho admin
             var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var adminHtml = await _emailRenderer.RenderAsync("AdminEmail.cshtml", viewModel);
+
             foreach (var admin in admins)
             {
-                var adminHtml = await _emailRenderer.RenderAsync("AdminEmail.cshtml", viewModel);
-                await _emailSender.SendEmailAsync(admin.Email!, "Đơn Hàng Mới", adminHtml);
+                if (!string.IsNullOrWhiteSpace(admin.Email))
+                {
+                    await _emailSender.SendEmailAsync(
+                        admin.Email,
+                        "Đơn Hàng Mới",
+                        adminHtml
+                    );
+                }
             }
         }
 
@@ -191,8 +201,8 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             {
                 var momoModel = new MoMoModel
                 {
-                    OrderId = orderId,
-                    OrderInfo = orderInfo,
+                    OrderId = orderId!,
+                    OrderInfo = orderInfo!,
                     Amount = amount,
                 };
 
@@ -205,7 +215,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
                 {
                     OrderId = orderId,
                     OrderInfo = orderInfo,
-                    Amount = (double)amount,
+                    Amount = (long)amount,
                     CreatedDate = momoModel.CreatedDate
                 });
             }
@@ -224,8 +234,8 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             {
                 var vnPayModel = new VNPayModel
                 {
-                    OrderId = response.OrderId,
-                    OrderInfo = response.OrderInfo,
+                    OrderId = response.OrderId!,
+                    OrderInfo = response.OrderInfo!,
                     Amount = response.Amount,
                 };
 

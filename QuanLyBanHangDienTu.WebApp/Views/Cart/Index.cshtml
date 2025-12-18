@@ -133,20 +133,20 @@
 			<div class="row mt-3">
 				@if (!isInfoIncomplete)
 				{
-					<div class="col-md-4 col-sm-12 mb-2">
+					@* <div class="col-md-4 col-sm-12 mb-2">
 						<form method="POST" asp-action="CreatePaymentUrlMoMo" asp-controller="Payment">
 							<input type="hidden" name="Amount" value="@Model.TotalAfterDiscount" />
-							<input type="hidden" name="OrderInfo" value="Thanh Toán Bằng MoMo" />
+							<input type="hidden" name="OrderInfo" value="Thanh Toán Đơn Hàng Băng MoMo" />
 							<button class="btn btn-warning btn-block w-100" type="submit" name="PayUrl">
 								<i class="fa fa-mobile"></i> Thanh Toán Bằng MoMo
 							</button>
 						</form>
-					</div>
+					</div> *@
 
-					<div class="col-md-4 col-sm-12 mb-2">
+					<div class="col-md-6 col-sm-12 mb-2">
 						<form method="POST" asp-action="CreatePaymentUrlVNPay" asp-controller="Payment">
 							<input type="hidden" name="Amount" value="@Model.TotalAfterDiscount" />
-							<input type="hidden" name="OrderInfo" value="Thanh Toán Bằng VNPay" />
+							<input type="hidden" name="OrderInfo" value="Thanh Toán Đơn Hàng Bằng VNPay" />
 							<input type="hidden" name="OrderType" value="other" />
 							<button class="btn btn-warning btn-block w-100" type="submit">
 								<i class="fa fa-credit-card"></i> Thanh Toán Bằng VNPay
@@ -154,7 +154,7 @@
 						</form>
 					</div>
 
-					<div class="col-md-4 col-sm-12 mb-2">
+					<div class="col-md-6 col-sm-12 mb-2">
 						<form asp-action="Checkout" asp-controller="Checkout" method="POST">
 							<input type="hidden" name="PaymentMethod" value="COD" />
 							<input type="hidden" name="PaymentId" value="" />
@@ -177,6 +177,7 @@
             <img src="~/images/cart/empty.png" />
 			<h5>Giỏ Hàng Của Bạn Trống. <a asp-action="Index" asp-controller="Home">Đi Đến Trang Chủ Để Mua Hàng</a>.</h5>
 		}
+		<br />
 	</div>
 </section>
 

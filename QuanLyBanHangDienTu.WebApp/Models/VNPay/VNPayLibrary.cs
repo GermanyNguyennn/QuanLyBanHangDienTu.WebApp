@@ -24,39 +24,55 @@ namespace QuanLyBanHangDienTu.WebApp.Models.VNPay
                 }
             }
 
-            var txnRefStr = vnPay.GetResponseData("vnp_TxnRef");
-            var transactionNoStr = vnPay.GetResponseData("vnp_TransactionNo");
-            var amountStr = vnPay.GetResponseData("vnp_Amount");
+            // TxnRef KHÔNG parse number
+            var orderId = vnPay.GetResponseData("vnp_TxnRef");
 
-            if (!long.TryParse(txnRefStr, out var vnPayOrderId) ||
-                !long.TryParse(transactionNoStr, out var vnPayTransactionId) ||
-                !decimal.TryParse(amountStr, out var vnPayAmountRaw))
+            // TransactionNo là số
+            if (!long.TryParse(
+                    vnPay.GetResponseData("vnp_TransactionNo"),
+                    out var transactionId))
             {
                 return new VNPayResponseModel { Success = false };
             }
 
-            var vnPayOrderInfo = vnPay.GetResponseData("vnp_OrderInfo");
-            var vnPayAmount = vnPayAmountRaw / 100;
-            var vnPayResponseCode = vnPay.GetResponseData("vnp_ResponseCode");
-            var vnPaySecureHash = collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value;
-            var checkSignature = vnPay.ValidateSignature(vnPaySecureHash!, hashSecret);
-
-            if (!checkSignature)
+            if (!decimal.TryParse(
+                    vnPay.GetResponseData("vnp_Amount"),
+                    out var amountRaw))
             {
                 return new VNPayResponseModel { Success = false };
+            }
+
+            var responseCode = vnPay.GetResponseData("vnp_ResponseCode");
+            var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
+            var secureHash = collection["vnp_SecureHash"].ToString();
+
+            // ❗ Validate chữ ký TRƯỚC
+            if (!vnPay.ValidateSignature(secureHash, hashSecret))
+            {
+                return new VNPayResponseModel { Success = false };
+            }
+
+            // ❗ VNPay chỉ thành công khi ResponseCode = "00"
+            if (responseCode != "00")
+            {
+                return new VNPayResponseModel
+                {
+                    Success = false,
+                    VnPayResponseCode = responseCode
+                };
             }
 
             return new VNPayResponseModel
             {
                 Success = true,
                 PaymentMethod = "VNPay",
-                OrderInfo = vnPayOrderInfo,
-                OrderId = vnPayOrderId.ToString(),
-                PaymentId = vnPayTransactionId.ToString(),
-                TransactionId = vnPayTransactionId.ToString(),
-                Amount = vnPayAmount,
-                Token = vnPaySecureHash,
-                VnPayResponseCode = vnPayResponseCode,
+                OrderId = orderId,
+                OrderInfo = orderInfo,
+                PaymentId = transactionId.ToString(),
+                TransactionId = transactionId.ToString(),
+                Amount = amountRaw / 100,
+                Token = secureHash,
+                VnPayResponseCode = responseCode
             };
         }
 
@@ -134,10 +150,12 @@ namespace QuanLyBanHangDienTu.WebApp.Models.VNPay
 
         public bool ValidateSignature(string inputHash, string secretKey)
         {
-            var rspRaw = GetResponseData();
-            var myChecksum = HmacSha512(secretKey, rspRaw);
-            return myChecksum.Equals(inputHash, StringComparison.InvariantCultureIgnoreCase);
+            var rawData = GetResponseData();
+            var myChecksum = HmacSha512(secretKey, rawData);
+
+            return string.Equals(myChecksum, inputHash, StringComparison.OrdinalIgnoreCase);
         }
+
         private string HmacSha512(string key, string inputData)
         {
             var hash = new StringBuilder();
@@ -154,29 +172,26 @@ namespace QuanLyBanHangDienTu.WebApp.Models.VNPay
 
             return hash.ToString();
         }
-
         private string GetResponseData()
         {
             var data = new StringBuilder();
-            if (_responseData.ContainsKey("vnp_SecureHashType"))
-            {
-                _responseData.Remove("vnp_SecureHashType");
-            }
 
-            if (_responseData.ContainsKey("vnp_SecureHash"))
+            foreach (var (key, value) in _responseData)
             {
-                _responseData.Remove("vnp_SecureHash");
-            }
+                if (key == "vnp_SecureHash" || key == "vnp_SecureHashType")
+                    continue;
 
-            foreach (var (key, value) in _responseData.Where(kv => !string.IsNullOrEmpty(kv.Value)))
-            {
-                data.Append(WebUtility.UrlEncode(key) + "=" + WebUtility.UrlEncode(value) + "&");
+                if (!string.IsNullOrEmpty(value))
+                {
+                    data.Append(WebUtility.UrlEncode(key))
+                        .Append("=")
+                        .Append(WebUtility.UrlEncode(value))
+                        .Append("&");
+                }
             }
 
             if (data.Length > 0)
-            {
-                data.Remove(data.Length - 1, 1);
-            }
+                data.Length--;
 
             return data.ToString();
         }
@@ -189,8 +204,7 @@ namespace QuanLyBanHangDienTu.WebApp.Models.VNPay
             if (x == y) return 0;
             if (x == null) return -1;
             if (y == null) return 1;
-            var vnpCompare = CompareInfo.GetCompareInfo("en-US");
-            return vnpCompare.Compare(x, y, CompareOptions.Ordinal);
+            return string.CompareOrdinal(x, y);
         }
     }
 }
