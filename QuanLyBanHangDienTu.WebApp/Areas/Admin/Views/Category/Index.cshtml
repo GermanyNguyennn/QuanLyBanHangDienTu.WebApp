@@ -34,7 +34,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td scope="col" class="text-center" style="vertical-align: middle;">@item.Id</td>
+                    <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@Html.Raw(@item.Description)</td>
                     <td>@item.Slug</td>
@@ -50,6 +50,8 @@
                     </td>
                     <td>
                         <a asp-controller="Category" asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
+                    </td>
+                    <td>
                         <a asp-controller="Category" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-warning btn-sm confirmDeletion">Xoá</a>
                     </td>
                 </tr>

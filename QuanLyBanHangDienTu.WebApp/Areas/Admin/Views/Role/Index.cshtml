@@ -29,14 +29,16 @@
         <tbody>
             @foreach (var item in Model)
             {
-                    <tr>
-                        <td scope="col" style="vertical-align: middle;">@item.Id</td>
-                        <td>@item.Name</td>
-                        <td>
-                            <a asp-controller="Role" asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
-                            <a asp-controller="Role" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-warning btn-sm confirmDeletion">Xoá</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td scope="col" style="vertical-align: middle;">@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <a asp-controller="Role" asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Role" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-warning btn-sm confirmDeletion">Xoá</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

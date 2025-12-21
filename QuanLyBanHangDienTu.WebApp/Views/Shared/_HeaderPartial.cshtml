@@ -36,38 +36,13 @@
 									</a>
 								</li>
 							}
-
-							@* MENU NGƯỜI DÙNG CHUNG *@
-							<li>
-								<a asp-area="" asp-controller="Account" asp-action="HistoryOrder">
-									<i class="fa fa-history"></i> Lịch Sử
-								</a>
-							</li>
-
-							<li>
-								<a asp-area="" asp-controller="Cart" asp-action="Index">
-									<i class="fa fa-shopping-cart"></i> Giỏ Hàng
-								</a>
-							</li>
-
-							<li>
-								<a asp-area="" asp-controller="Account" asp-action="UserOrder">
-									<i class="fa fa-user"></i> Thông Tin Cá Nhân
-								</a>
-							</li>
-
-							<li>
-								<a asp-area="" asp-controller="Account" asp-action="ChangePassword">
-									<i class="fa fa-key"></i> Đổi Mật Khẩu
-								</a>
-							</li>
-
+							
 							@* TRANG CHỦ + ĐĂNG XUẤT *@
 							<li>
 								<a asp-area="" asp-controller="Home" asp-action="Index">
 									<i class="fa fa-home"></i> Trang Chủ
 								</a>
-							</li>
+							</li>						
 
 							<li>
 								<a asp-area="" asp-controller="Account" asp-action="Logout">
@@ -107,7 +82,29 @@
 					<ul class="nav navbar-nav collapse navbar-collapse">
 						<li><a asp-controller="Home" asp-action="Index" class="active">Trang Chủ</a></li>
 						<li><a asp-controller="Cart" asp-action="Index">Giỏ Hàng</a></li>
-						@* <li><a asp-controller="Home" asp-action="Contact">Liên Hệ</a></li> *@
+						<li class="dropdown">
+							<a href="">Thông Tin<i class="fa fa-angle-down"></i></a>
+							<ul role="menu" class="sub-menu">
+
+								<li>
+									<a asp-area="" asp-controller="Account" asp-action="UserOrder">
+										<i class="fa fa-user"></i> Thông Tin Cá Nhân
+									</a>
+								</li>
+
+								<li>
+									<a asp-area="" asp-controller="Account" asp-action="HistoryOrder">
+										<i class="fa fa-history"></i> Lịch Sử
+									</a>
+								</li>
+
+								<li>
+									<a asp-area="" asp-controller="Account" asp-action="ChangePassword">
+										<i class="fa fa-key"></i> Đổi Mật Khẩu
+									</a>
+								</li>
+							</ul>
+						</li>
 					</ul>
 				</div>
 			</div>

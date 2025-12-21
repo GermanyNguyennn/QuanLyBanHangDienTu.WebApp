@@ -148,13 +148,24 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
         private async Task<List<OrderModel>> GetFilteredOrders(DateTime? fromDate, DateTime? toDate)
         {
-            return await _dataContext.Orders
-                .Where(o =>
-                    (!fromDate.HasValue || o.CreatedDate.ToLocalTime().Date >= fromDate.Value.Date) &&
-                    (!toDate.HasValue || o.CreatedDate.ToLocalTime().Date <= toDate.Value.Date))
+            var query = _dataContext.Orders.AsQueryable();
+
+            if (fromDate.HasValue)
+            {
+                var from = fromDate.Value.Date;
+                query = query.Where(o => o.CreatedDate >= from);
+            }
+
+            if (toDate.HasValue)
+            {
+                var to = toDate.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(o => o.CreatedDate <= to);
+            }
+
+            return await query
                 .Include(o => o.OrderDetail)
                 .Include(o => o.Coupon)
                 .ToListAsync();
-        }       
+        }
     }
 }

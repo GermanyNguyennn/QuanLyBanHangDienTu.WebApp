@@ -81,20 +81,21 @@
 				<div class="mainmenu pull-left">
 					<ul class="nav navbar-nav collapse navbar-collapse">
 						<li><a asp-area="Admin" asp-controller="Product" asp-action="Index" class="active">Trang Chủ</a></li>
-						<li class="dropdown">
+						<li><a asp-area="Admin" asp-controller="Category" asp-action="Index">Danh Mục</a></li>
+						<li><a asp-area="Admin" asp-controller="Brand" asp-action="Index">Thương Hiệu</a></li>
+						<li><a asp-area="Admin" asp-controller="Product" asp-action="Index">Sản Phẩm</a></li>
+						<li><a asp-area="Admin" asp-controller="Order" asp-action="Index">Đơn Hàng</a></li>
+						<li><a asp-area="Admin" asp-controller="User" asp-action="Index">Tài Khoản</a></li>
+						<li><a asp-area="Admin" asp-controller="Role" asp-action="Index">Vai Trò</a></li>
+						<li><a asp-area="Admin" asp-controller="Slider" asp-action="Index">Slider</a></li>
+						<li><a asp-area="Admin" asp-controller="Coupon" asp-action="Index">Mã Giảm Giá</a></li>
+						<li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Thống Kê</a></li>
+						@* <li class="dropdown">                                           
 							<a>Sản Phẩm<i class="fa fa-angle-down"></i></a>
 							<ul role="menu" class="sub-menu">
-								<li><a asp-area="Admin" asp-controller="Category" asp-action="Index">Danh Mục</a></li>
-								<li><a asp-area="Admin" asp-controller="Brand" asp-action="Index">Thương Hiệu</a></li>
-								<li><a asp-area="Admin" asp-controller="Product" asp-action="Index">Sản Phẩm</a></li>
-								<li><a asp-area="Admin" asp-controller="Order" asp-action="Index">Đơn Hàng</a></li>
-								<li><a asp-area="Admin" asp-controller="User" asp-action="Index">Tài Khoản</a></li>
-								<li><a asp-area="Admin" asp-controller="Role" asp-action="Index">Vai Trò</a></li>
-								<li><a asp-area="Admin" asp-controller="Slider" asp-action="Index">Slider</a></li>
-								<li><a asp-area="Admin" asp-controller="Coupon" asp-action="Index">Mã Giảm Giá</a></li>
-								<li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Thống Kê</a></li>
+								
 							</ul>
-						</li>
+						</li> *@
 						<li><a asp-area="Admin" asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
 					</ul>
 				</div>

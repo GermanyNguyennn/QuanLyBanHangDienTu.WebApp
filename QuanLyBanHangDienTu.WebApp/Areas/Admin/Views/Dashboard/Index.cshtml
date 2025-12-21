@@ -22,28 +22,32 @@
         <table class="table table-bordered w-auto">
             <tr>
                 <th scope="col" style="vertical-align: middle;"><label>Từ Ngày:</label></th>
-                <td><input asp-for="FromDate" type="date" class="form-control" /></td>
+                <td><input name="fromDate" asp-for="FromDate" type="date" class="form-control" /></td>
                 <th scope="col" style="vertical-align: middle;"><label>Đến Ngày:</label></th>
-                <td><input asp-for="ToDate" type="date" class="form-control" /></td>
+                <td><input name="toDate" asp-for="ToDate" type="date" class="form-control" /></td>
             </tr>
             <tr>
                 <th scope="col" style="vertical-align: middle;">Danh Mục:</th>
                 <td>
-                    <select name="CategoryId" class="form-select">
+                    <select name="categoryId" class="form-select">
                         <option value="">-- Tất cả --</option>
-                        @foreach (var cat in ViewBag.Categories as List<CategoryModel> ?? new List<CategoryModel>())
+                        @foreach (var cat in ViewBag.Categories as List<CategoryModel> ?? new())
                         {
-                            <option value="@cat.Id" selected="@(selectedCategory == cat.Id ? "selected" : null)">@cat.Name</option>
+                            <option value="@cat.Id" selected="@(selectedCategory == cat.Id ? "selected" : null)">
+                                @cat.Name
+                            </option>
                         }
                     </select>
                 </td>
                 <th scope="col" style="vertical-align: middle;">Thương Hiệu:</th>
                 <td>
-                    <select name="BrandId" class="form-select">
+                    <select name="brandId" class="form-select">
                         <option value="">-- Tất cả --</option>
-                        @foreach (var br in ViewBag.Brands as List<BrandModel> ?? new List<BrandModel>())
+                        @foreach (var br in ViewBag.Brands as List<BrandModel> ?? new())
                         {
-                            <option value="@br.Id" selected="@(selectedBrand == br.Id ? "selected" : null)">@br.Name</option>
+                            <option value="@br.Id" selected="@(selectedBrand == br.Id ? "selected" : null)">
+                                @br.Name
+                            </option>
                         }
                     </select>
                 </td>

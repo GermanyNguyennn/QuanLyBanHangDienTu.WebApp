@@ -13,15 +13,30 @@
 						<ol class="carousel-indicators">
 							@for (int i = 0; i < sliders.Count; i++)
 							{
-								<li data-target="#slider-carousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+								<li data-target="#slider-carousel"
+									data-slide-to="@i"
+									class="@(i == 0 ? "active" : "")">
+								</li>
 							}
 						</ol>
 						<div class="carousel-inner">
 							@foreach (var slider in sliders)
 							{
 								<div class="item @(index == 0 ? "active" : "")">
-									<div class="col-sm-12">
-										<img src="~/media/sliders/@slider.Image" width="900px" height="450px" />
+									<div class="row">
+										<!-- Text -->
+										<div class="col-sm-6">
+											<h1><span>E</span>-SHOPPER</h1>
+											<h2>@slider.Name</h2>
+											<p>@slider.Description</p>
+										</div>
+
+										<!-- Image -->
+										<div class="col-sm-6">
+											<img src="~/media/sliders/@slider.Image"
+												 class="girl img-responsive"
+												 alt="@slider.Name" />
+										</div>
 									</div>
 								</div>
 								index++;
