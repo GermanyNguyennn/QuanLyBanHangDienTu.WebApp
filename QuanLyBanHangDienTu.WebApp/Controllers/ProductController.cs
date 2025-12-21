@@ -16,19 +16,33 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? sort_by)
         {
-            var products = await _dataContext.Products
+            var query = _dataContext.Products
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
-                .ToListAsync();
+                .AsQueryable();
+
+            query = sort_by switch
+            {
+                "price_increase" => query.OrderBy(p => p.Price),
+                "price_decrease" => query.OrderByDescending(p => p.Price),
+                "price_newest" => query.OrderByDescending(p => p.CreatedDate),
+                "price_oldest" => query.OrderBy(p => p.CreatedDate),
+                _ => query
+            };
+
+            var products = await query.ToListAsync();
 
             ViewBag.Sliders = await _dataContext.Sliders
-               .Where(s => s.Status == 1)
-               .ToListAsync();
+                .Where(s => s.Status == 1)
+                .ToListAsync();
+
+            ViewBag.SortBy = sort_by;
 
             return View(products);
         }
+
 
         public async Task<IActionResult> Detail(int id)
         {
@@ -78,23 +92,35 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchByPrice(decimal minPrice, decimal maxPrice)
+        public async Task<IActionResult> SearchByPrice(decimal minPrice, decimal maxPrice, string? sort_by)
         {
             ViewBag.MinPrice = minPrice;
             ViewBag.MaxPrice = maxPrice;
 
-            var products = await _dataContext.Products
+            var query = _dataContext.Products
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
-                .ToListAsync();
+                .AsQueryable();
+
+            query = sort_by switch
+            {
+                "price_increase" => query.OrderBy(p => p.Price),
+                "price_decrease" => query.OrderByDescending(p => p.Price),
+                "price_newest" => query.OrderByDescending(p => p.CreatedDate),
+                "price_oldest" => query.OrderBy(p => p.CreatedDate),
+                _ => query
+            };
+
+            var products = await query.ToListAsync();
 
             ViewBag.Sliders = await _dataContext.Sliders
-            .Where(s => s.Status == 1)
-            .ToListAsync();
+                .Where(s => s.Status == 1)
+                .ToListAsync();
+
+            ViewBag.SortBy = sort_by;
 
             return View("Search", products);
-
         }
     }
 }

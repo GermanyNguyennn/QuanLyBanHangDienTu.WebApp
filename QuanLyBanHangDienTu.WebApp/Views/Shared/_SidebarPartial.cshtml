@@ -7,11 +7,7 @@
 <div class="left-sidebar">
 	<h2>Danh Mục</h2>
 	<div class="panel-group category-products" id="accordian">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title"><vc:categories></vc:categories></h4>
-			</div>
-		</div>	
+		<vc:categories></vc:categories>
 	</div>
 
 	<div class="panel-group brands_products">
@@ -28,14 +24,13 @@
 		<div class="well text-center">
 			<input type="text" class="span2" value="" data-slider-min="0" data-slider-max="200000000" data-slider-step="1000000" data-slider-value="@($"[{minPrice},{maxPrice}]")"id="sl2">
 
-			<hr />
-
 			<b class="pull-left">@minPrice.ToString("#,##0 VNĐ")</b> <b class="pull-right">@maxPrice.ToString("#,##0 VNĐ")</b>
 		</div>
 	</div>
 
-	@* <div class="panel-group">
+	<div class="panel-group">
 		<h2>Sắp Xếp Theo</h2>
+
 		<select class="form-control" id="sort_by">
 			<option value="">--- Lựa Chọn ---</option>
 			<option value="@currentUrl?sort_by=price_increase">Giá Tăng dần</option>
@@ -43,21 +38,21 @@
 			<option value="@currentUrl?sort_by=price_newest">Mới Nhất</option>
 			<option value="@currentUrl?sort_by=price_oldest">Cũ Nhất</option>
 		</select>
-	</div> *@
+	</div>
 
 </div>
 
-<script>
-	$(document).ready(function () {
-		const slider = $('#sl2').slider();
-
-		slider.on('slideStop', function (e) {
-			const range = e.value;
-			const url = '@Url.Action("SearchByPrice", "Product")';
-			window.location.href = `${url}?minPrice=${range[0]}&maxPrice=${range[1]}`;
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('#sort_by').change(function () {
+				const url = $(this).val();
+				if (url) {
+					window.location.href = url;
+				}	
+			});
 		});
-	});
-</script>
-
+	</script>
+}
 
 

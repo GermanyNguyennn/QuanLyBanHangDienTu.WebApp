@@ -15,7 +15,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly DataContext _dataContext;
-
         public CategoryController(DataContext context)
         {
             _dataContext = context;

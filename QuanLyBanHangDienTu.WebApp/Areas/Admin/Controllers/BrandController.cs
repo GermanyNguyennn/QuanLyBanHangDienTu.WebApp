@@ -45,7 +45,6 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(BrandModel brandModel)
         {
-
             brandModel.Slug = GenerateSlug(brandModel.Name!);
 
             bool slugExists = await _dataContext.Brands
