@@ -71,7 +71,7 @@
         <tfoot>
             <tr>
                 <td colspan="3" style="text-align:right;"><strong>Tổng Thành Tiền:</strong></td>
-                <td style="text-align:right;"><strong>@Model.TotalAmount.ToString("#,##0 VNĐ")</strong></td>
+                <td style="text-align:right; color: green;"><strong>@Model.TotalAmount.ToString("#,##0 VNĐ")</strong></td>
             </tr>
 
             @if (!string.IsNullOrEmpty(Model.CouponCode) && Model.DiscountAmount > 0)
@@ -87,7 +87,7 @@
                 </tr>
 
                 <tr>
-                    <td colspan="3" style="text-align:right; color: green;"><strong>Tổng Thành Tiền Sau Giảm:</strong></td>
+                    <td colspan="3" style="text-align:right;"><strong>Tổng Thành Tiền Sau Giảm:</strong></td>
                     <td style="text-align:right; color: green;">
                         <strong>@Model.TotalAfterDiscount.ToString("#,##0 VNĐ")</strong>
                     </td>

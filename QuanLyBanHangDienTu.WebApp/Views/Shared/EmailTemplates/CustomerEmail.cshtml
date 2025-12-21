@@ -40,7 +40,7 @@
     </style>
 </head>
 <body>
-    <h2>🛒 Cảm Ơn Bạn Dã Mua Hàng!</h2>
+    <h2>🛒 Cảm Ơn Bạn Đã Mua Hàng!</h2>
     <p>Xin Chào <strong>@Model.UserName</strong>,</p>
 
     <h3>🧾 Thông Tin Chi Tiết Mua Hàng</h3>
@@ -82,7 +82,12 @@
     }
     else
     {
-        <p><strong>Tổng Thành Tiền:</strong> @Model.TotalAmount.ToString("#,##0 VNĐ")</p>
+        <p>
+            <strong>Tổng Thành Tiền:</strong> 
+            <span style="color: green;">
+                @Model.TotalAfterDiscount.ToString("#,##0 VNĐ")
+            </span>
+        </p>
     }
     <p>Chúng Tôi Sẽ Thông Báo Cho Bạn Khi Đơn Hàng Của Bạn Đang Được Giao ❤️</p>
     <p style="margin-top: 30px;">Trân Trọng,<br><strong>Nguyễn Mạnh Đức</strong></p>

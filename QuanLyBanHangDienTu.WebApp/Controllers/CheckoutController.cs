@@ -145,7 +145,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             HttpContext.Session.Remove("DiscountAmount");
 
             // Gửi email xác nhận
-            //await SendEmailOrder(userEmail, userName!, orderCode, emailItems, totalAmount, couponCode, discountAmount);
+            await SendEmailOrder(userEmail, userName!, orderCode, emailItems, totalAmount, couponCode, discountAmount);
 
             TempData["success"] = "Order successful!";
             return RedirectToAction("Index", "Home");

@@ -10,7 +10,7 @@ namespace QuanLyBanHangDienTu.WebApp.Services.EmailTemplates
             var fromAddress = new MailAddress("manhducnguyen23092003@gmail.com", "Shop Của Nguyễn Mạnh Đức"); // Đổi địa chỉ gửi
             var toAddress = new MailAddress(toEmail);
 
-            const string fromPassword = "ltbnwvfppfbnihzl"; // Mật khẩu ứng dụng Gmail (App Password)
+            const string fromPassword = "rpmedmbothuddnvr"; // Mật khẩu ứng dụng Gmail (App Password)
 
             var smtp = new SmtpClient
             {
