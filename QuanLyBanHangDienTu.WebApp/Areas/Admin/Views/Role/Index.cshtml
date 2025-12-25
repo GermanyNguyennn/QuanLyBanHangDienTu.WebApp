@@ -36,7 +36,17 @@
                         <a asp-controller="Role" asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
                     </td>
                     <td>
-                        <a asp-controller="Role" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-warning btn-sm confirmDeletion">Xoá</a>
+                        <form asp-controller="Role"
+                              asp-action="Delete"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xoá bản ghi này?');">
+
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Xoá
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }

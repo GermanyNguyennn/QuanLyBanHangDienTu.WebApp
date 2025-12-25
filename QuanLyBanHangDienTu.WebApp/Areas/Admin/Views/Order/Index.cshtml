@@ -88,7 +88,17 @@
                         <a asp-controller="Order" asp-action="ViewOrder" asp-route-OrderCode="@item.OrderCode" class="btn btn-warning btn-sm">Xem</a>
                     </td>
                     <td>
-                        <a asp-controller="Order" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-warning btn-sm confirmDeletion">Xoá</a>
+                        <form asp-controller="Order"
+                              asp-action="Delete"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xoá bản ghi này?');">
+
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Xoá
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }

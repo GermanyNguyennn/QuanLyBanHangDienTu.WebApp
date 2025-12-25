@@ -44,6 +44,24 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return View(orders);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var order = await _dataContext.Orders.FindAsync(id);
+            if (order == null)
+            {
+                TempData["error"] = "Category not found.";
+                return RedirectToAction("Index");
+            }
+
+            _dataContext.Orders.Remove(order);
+            await _dataContext.SaveChangesAsync();
+
+            TempData["success"] = "Order deleted successfully!";
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public async Task<IActionResult> ViewOrder(string orderCode)
         {

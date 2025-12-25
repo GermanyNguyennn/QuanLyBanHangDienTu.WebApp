@@ -89,6 +89,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var slider = await _dataContext.Sliders.FindAsync(id);

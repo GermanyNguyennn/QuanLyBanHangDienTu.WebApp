@@ -150,23 +150,6 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
                     await context.SaveChangesAsync();
                 }
             }
-
-            if (!context.Contacts.Any())
-            {
-                ContactModel contactModel = new ContactModel
-                {
-                    Name = "Nguyễn Mạnh Đức",
-                    Map = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.883773346561!2d105.85400031440625!3d21.00500009317313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4000000001%3A0x0000000000000001!2sNgõ%2084%20Phố%208%2F3%2C%20Quỳnh%20Mai%2C%20Hai%20Bà%20Trưng%2C%20Hà%20Nội!5e0!3m2!1svi!2s!4v1680000000000",
-                    Email = "manhducnguyen23092003@gmail.com",
-                    Phone = "0964429403",
-                    Address = "Hà Nội",
-                    Description = "",
-                    LogoImage = "5c12ee81-ed3b-4d66-a529-5f93af1726ff_Admin.jpg"
-                };
-
-                context.Contacts.Add(contactModel);
-                await context.SaveChangesAsync();
-            }
         }
     }
 }

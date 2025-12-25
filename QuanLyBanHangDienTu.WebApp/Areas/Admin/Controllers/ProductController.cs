@@ -126,7 +126,8 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _dataContext.Products.FindAsync(id);
