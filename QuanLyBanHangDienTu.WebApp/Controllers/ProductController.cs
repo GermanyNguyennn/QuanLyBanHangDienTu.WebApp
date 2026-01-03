@@ -21,6 +21,7 @@ namespace QuanLyBanHangDienTu.WebApp.Controllers
             var query = _dataContext.Products
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
+                .Where(p => p.Status == 1)
                 .AsQueryable();
 
             query = sort_by switch

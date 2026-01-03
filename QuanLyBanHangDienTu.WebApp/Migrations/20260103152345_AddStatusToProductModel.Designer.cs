@@ -12,8 +12,8 @@ using QuanLyBanHangDienTu.WebApp.Repository;
 namespace QuanLyBanHangDienTu.WebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251217164808_Initial")]
-    partial class Initial
+    [Migration("20260103152345_AddStatusToProductModel")]
+    partial class AddStatusToProductModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -750,6 +750,9 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                     b.Property<int>("Sold")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Version")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -979,7 +982,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.ProductModel", "Product")
-                        .WithMany("OrderDetails")
+                        .WithMany("OrderDetail")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1019,7 +1022,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.ProductModel", "Product")
-                        .WithOne("ProductDetailLaptops")
+                        .WithOne("ProductDetailLaptop")
                         .HasForeignKey("QuanLyBanHangDienTu.WebApp.Models.ProductDetailLaptopModel", "ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1046,7 +1049,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.ProductModel", "Product")
-                        .WithOne("ProductDetailPhones")
+                        .WithOne("ProductDetailPhone")
                         .HasForeignKey("QuanLyBanHangDienTu.WebApp.Models.ProductDetailPhoneModel", "ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1073,7 +1076,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.ProductModel", "Product")
-                        .WithOne("ProductDetailTablets")
+                        .WithOne("ProductDetailTablet")
                         .HasForeignKey("QuanLyBanHangDienTu.WebApp.Models.ProductDetailTabletModel", "ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1094,7 +1097,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.BrandModel", null)
-                        .WithMany("Product")
+                        .WithMany("Products")
                         .HasForeignKey("BrandModelId");
 
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.CategoryModel", "Category")
@@ -1104,7 +1107,7 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyBanHangDienTu.WebApp.Models.CategoryModel", null)
-                        .WithMany("Product")
+                        .WithMany("Products")
                         .HasForeignKey("CategoryModelId");
 
                     b.Navigation("Brand");
@@ -1114,12 +1117,12 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.BrandModel", b =>
                 {
-                    b.Navigation("Product");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.CategoryModel", b =>
                 {
-                    b.Navigation("Product");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.OrderModel", b =>
@@ -1129,13 +1132,13 @@ namespace QuanLyBanHangDienTu.WebApp.Migrations
 
             modelBuilder.Entity("QuanLyBanHangDienTu.WebApp.Models.ProductModel", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("OrderDetail");
 
-                    b.Navigation("ProductDetailLaptops");
+                    b.Navigation("ProductDetailLaptop");
 
-                    b.Navigation("ProductDetailPhones");
+                    b.Navigation("ProductDetailPhone");
 
-                    b.Navigation("ProductDetailTablets");
+                    b.Navigation("ProductDetailTablet");
                 });
 #pragma warning restore 612, 618
         }

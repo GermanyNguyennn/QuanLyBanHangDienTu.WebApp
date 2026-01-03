@@ -33,6 +33,7 @@
                 <th scope="col" class="text-center" style="vertical-align: middle;">Giá Nhập</th>
                 <th scope="col" class="text-center" style="vertical-align: middle;">Số Lượng Tồn Kho</th>
                 <th scope="col" class="text-center" style="vertical-align: middle;">Đã Bán</th>
+                <th scope="col" class="text-center" style="vertical-align: middle;">Trạng Thái</th>
             </tr>
         </thead>
         <tbody>
@@ -51,6 +52,16 @@
                     <td>@item.ImportPrice.ToString("#,##0 VNĐ")</td>
                     <td>@item.Quantity</td>
                     <td>@item.Sold</td>
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <span class="text text-success">Hiển Thị</span>
+                        }
+                        else
+                        {
+                            <span class="text text-danger">Ẩn</span>
+                        }
+                    </td>
                     <td>
                         <a asp-controller="Product" asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
                     </td>

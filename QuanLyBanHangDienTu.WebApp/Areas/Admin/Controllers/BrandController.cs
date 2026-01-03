@@ -104,9 +104,19 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var brand = await _dataContext.Brands.FindAsync(id);
+
             if (brand == null)
             {
                 TempData["error"] = "Brand not found.";
+                return RedirectToAction("Index");
+            }
+
+            bool isUsed = await _dataContext.Products
+                .AnyAsync(p => p.BrandId == id);
+
+            if (isUsed)
+            {
+                TempData["error"] = "Cannot delete brand because it is being used by products.";
                 return RedirectToAction("Index");
             }
 
@@ -116,6 +126,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             TempData["success"] = "Brand deleted successfully!";
             return RedirectToAction("Index");
         }
+
 
         private string GenerateSlug(string name)
         {

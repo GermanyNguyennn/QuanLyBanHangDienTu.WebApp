@@ -17,6 +17,7 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public decimal ImportPrice { get; set; }
         public int Quantity { get; set; }
         public int Sold { get; set; }
+        public int Status { get; set; }
         public string Slug { get; set; }
         public int BrandId { get; set; }
         public int CategoryId { get; set; }
@@ -31,10 +32,10 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         [FileExtension]
         public IFormFile? ImageUpload { get; set; }
 
-        public ProductDetailPhoneModel? ProductDetailPhones { get; set; }
-        public ProductDetailLaptopModel? ProductDetailLaptops { get; set; }
-        public ProductDetailTabletModel? ProductDetailTablets { get; set; }
-        public ICollection<OrderDetailModel> OrderDetails { get; set; } = new List<OrderDetailModel>();
+        public ProductDetailPhoneModel? ProductDetailPhone { get; set; }
+        public ProductDetailLaptopModel? ProductDetailLaptop { get; set; }
+        public ProductDetailTabletModel? ProductDetailTablet { get; set; }
+        public ICollection<OrderDetailModel> OrderDetail { get; set; } = new List<OrderDetailModel>();
 
     }
 }

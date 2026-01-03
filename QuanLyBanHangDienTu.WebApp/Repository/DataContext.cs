@@ -16,26 +16,26 @@ namespace QuanLyBanHangDienTu.WebApp.Repository
 
             // Cấu hình quan hệ 1-1 giữa Product và ProductDetailPhone, ProductDetailLaptop, ProductDetailTablet
             modelBuilder.Entity<ProductModel>()
-                .HasOne(p => p.ProductDetailLaptops)
+                .HasOne(p => p.ProductDetailLaptop)
                 .WithOne(d => d.Product)
                 .HasForeignKey<ProductDetailLaptopModel>(d => d.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ProductModel>()
-                .HasOne(p => p.ProductDetailPhones)
+                .HasOne(p => p.ProductDetailPhone)
                 .WithOne(d => d.Product)
                 .HasForeignKey<ProductDetailPhoneModel>(d => d.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ProductModel>()
-                .HasOne(p => p.ProductDetailTablets)
+                .HasOne(p => p.ProductDetailTablet)
                 .WithOne(d => d.Product)
                 .HasForeignKey<ProductDetailTabletModel>(d => d.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Quan hệ 1-n giữa Product và OrderDetail
             modelBuilder.Entity<ProductModel>()
-                .HasMany(p => p.OrderDetails)
+                .HasMany(p => p.OrderDetail)
                 .WithOne(o => o.Product)
                 .HasForeignKey(o => o.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);

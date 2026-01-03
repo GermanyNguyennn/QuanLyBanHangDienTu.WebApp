@@ -104,9 +104,19 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var category = await _dataContext.Categories.FindAsync(id);
+
             if (category == null)
             {
                 TempData["error"] = "Category not found.";
+                return RedirectToAction("Index");
+            }
+
+            bool isUsed = await _dataContext.Products
+                .AnyAsync(p => p.CategoryId == id);
+
+            if (isUsed)
+            {
+                TempData["error"] = "Cannot delete category because it is being used by products.";
                 return RedirectToAction("Index");
             }
 

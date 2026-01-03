@@ -118,6 +118,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
             existingProduct.Quantity = productModel.Quantity;
             existingProduct.CategoryId = productModel.CategoryId;
             existingProduct.BrandId = productModel.BrandId;
+            existingProduct.Status = productModel.Status;
 
             _dataContext.Update(existingProduct);
             await _dataContext.SaveChangesAsync();
@@ -130,8 +131,18 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _dataContext.Products.FindAsync(id);
-            if (product == null) return NotFound();
+            var product = await _dataContext.Products
+                .Include(p => p.OrderDetail)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+                return NotFound();
+
+            if (product.OrderDetail != null && product.OrderDetail.Any())
+            {
+                TempData["error"] = "The product cannot be removed because the order has already been placed.";
+                return RedirectToAction("Index");
+            }
 
             DeleteImage(product.Image!);
 
@@ -140,7 +151,7 @@ namespace QuanLyBanHangDienTu.WebApp.Areas.Admin.Controllers
 
             TempData["success"] = "Product deleted successfully.";
             return RedirectToAction("Index");
-        }       
+        }
 
         [HttpPost]
         public async Task<IActionResult> Search(string searchTerm)

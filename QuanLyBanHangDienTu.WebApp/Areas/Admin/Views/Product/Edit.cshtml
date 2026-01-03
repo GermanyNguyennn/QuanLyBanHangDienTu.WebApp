@@ -100,6 +100,17 @@
         </tr>
 
         <tr>
+            <th style="vertical-align: middle;"><label>Trạng Thái</label></th>
+            <td>
+                <select asp-for="Status" class="form-control">
+                    <option value="1">Hiển Thị</option>
+                    <option value="0">Ẩn</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger" />
+            </td>
+        </tr>
+
+        <tr>
             <td colspan="2" class="text-right">
                 <button class="btn btn-warning btn-sm">Sửa</button>
                 <a asp-action="Index" asp-controller="Product" class="btn btn-warning btn-sm">Quay Lại</a>

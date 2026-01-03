@@ -110,12 +110,14 @@
                         if (result.success) {
                             Swal.fire({
                                 title: "Order status updated successfully.",
-                                icon: "success"
+                                icon: "success",
+                                confirmButtonText: "OK"
                             });
                         } else {
                             Swal.fire({
                                 title: "Order status update failed.",
-                                icon: "error"
+                                icon: "error",
+                                confirmButtonText: "OK"
                             });
                         }
                     }

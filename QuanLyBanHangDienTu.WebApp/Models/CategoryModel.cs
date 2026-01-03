@@ -11,6 +11,6 @@ namespace QuanLyBanHangDienTu.WebApp.Models
         public string Slug { get; set; }
         public int Status { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public ICollection<ProductModel> Product { get; set; } = new List<ProductModel>();
+        public ICollection<ProductModel> Products { get; set; } = new List<ProductModel>();
     }
 }
